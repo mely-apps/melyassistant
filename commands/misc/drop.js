@@ -27,19 +27,19 @@ module.exports = {
 					.addOptions({
 						label: "Chung",
 						value: "announcements",
-						description: "Nhận những thông báo chung từ MeLy!",
+						description: "Nhận thông báo chung từ MeLy!",
 					})
 					.addOptions({
 						label: "Sự kiện",
 						value: "events",
 						description:
-							"Nhận những thông báo về các sự kiện sẽ hoặc đang diễn ra tại máy chủ Code MeLy!",
+							"Nhận thông báo về các sự kiện tại Code Mely!",
 					})
 					.addOptions({
 						label: "Cập nhật",
 						value: "updates",
 						description:
-							"Nhận những thông báo về những thay đổi trong máy chủ Code MeLy!",
+							"Nhận thông báo về những thay đổi tại máy chủ Code Mely!",
 					})
 			),
 			new Discord.MessageActionRow().addComponents(
