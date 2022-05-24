@@ -87,20 +87,20 @@ for (const folder of commandFolders) {
  * @description All slash commands.
  */
 
-const slashCommands = fs.readdirSync("./interactions/slash");
+// const slashCommands = fs.readdirSync("./interactions/slash");
 
-// Loop through all files and store slash-commands in slashCommands collection.
+// // Loop through all files and store slash-commands in slashCommands collection.
 
-for (const module of slashCommands) {
-	const commandFiles = fs
-		.readdirSync(`./interactions/slash/${module}`)
-		.filter((file) => file.endsWith(".js"));
+// for (const module of slashCommands) {
+// 	const commandFiles = fs
+// 		.readdirSync(`./interactions/slash/${module}`)
+// 		.filter((file) => file.endsWith(".js"));
 
-	for (const commandFile of commandFiles) {
-		const command = require(`./interactions/slash/${module}/${commandFile}`);
-		client.slashCommands.set(command.data.name, command);
-	}
-}
+// 	for (const commandFile of commandFiles) {
+// 		const command = require(`./interactions/slash/${module}/${commandFile}`);
+// 		client.slashCommands.set(command.data.name, command);
+// 	}
+// }
 
 /**********************************************************************/
 // Registration of Context-Menu Interactions
@@ -110,20 +110,20 @@ for (const module of slashCommands) {
  * @description All Context Menu commands.
  */
 
-const contextMenus = fs.readdirSync("./interactions/context-menus");
+// const contextMenus = fs.readdirSync("./interactions/context-menus");
 
-// Loop through all files and store slash-commands in slashCommands collection.
+// // Loop through all files and store slash-commands in slashCommands collection.
 
-for (const folder of contextMenus) {
-	const files = fs
-		.readdirSync(`./interactions/context-menus/${folder}`)
-		.filter((file) => file.endsWith(".js"));
-	for (const file of files) {
-		const menu = require(`./interactions/context-menus/${folder}/${file}`);
-		const keyName = `${folder.toUpperCase()} ${menu.data.name}`;
-		client.contextCommands.set(keyName, menu);
-	}
-}
+// for (const folder of contextMenus) {
+// 	const files = fs
+// 		.readdirSync(`./interactions/context-menus/${folder}`)
+// 		.filter((file) => file.endsWith(".js"));
+// 	for (const file of files) {
+// 		const menu = require(`./interactions/context-menus/${folder}/${file}`);
+// 		const keyName = `${folder.toUpperCase()} ${menu.data.name}`;
+// 		client.contextCommands.set(keyName, menu);
+// 	}
+// }
 
 /**********************************************************************/
 // Registration of Button-Command Interactions.
@@ -213,19 +213,19 @@ const commandJsonData = [
  * @description All trigger categories aka folders.
  */
 
-const triggerFolders = fs.readdirSync("./triggers");
+// const triggerFolders = fs.readdirSync("./triggers");
 
-// Loop through all files and store commands in commands collection.
+// // Loop through all files and store commands in commands collection.
 
-for (const folder of triggerFolders) {
-	const triggerFiles = fs
-		.readdirSync(`./triggers/${folder}`)
-		.filter((file) => file.endsWith(".js"));
-	for (const file of triggerFiles) {
-		const trigger = require(`./triggers/${folder}/${file}`);
-		client.triggers.set(trigger.name, trigger);
-	}
-}
+// for (const folder of triggerFolders) {
+// 	const triggerFiles = fs
+// 		.readdirSync(`./triggers/${folder}`)
+// 		.filter((file) => file.endsWith(".js"));
+// 	for (const file of triggerFiles) {
+// 		const trigger = require(`./triggers/${folder}/${file}`);
+// 		client.triggers.set(trigger.name, trigger);
+// 	}
+// }
 
 // Login into your client application with bot's token.
 

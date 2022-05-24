@@ -50,28 +50,7 @@ module.exports = {
 
 			// Attempts to send embed in DMs.
 
-			return message.author
-				.send({ embeds: [helpEmbed] })
-
-				.then(() => {
-					if (message.channel.type === "dm") return;
-
-					// On validation, reply back.
-
-					message.reply({
-						content: "I've sent you a DM with all my commands!",
-					});
-				})
-				.catch((error) => {
-					// On failing, throw error.
-
-					console.error(
-						`Could not send help DM to ${message.author.tag}.\n`,
-						error
-					);
-
-					message.reply({ content: "It seems like I can't DM you!" });
-				});
+			return message.reply({ embeds: [helpEmbed] });
 		}
 
 		// If argument is provided, check if it's a command.
