@@ -38,11 +38,23 @@ module.exports = {
 			let helpEmbed = new MessageEmbed()
 				.setColor(0x4286f4)
 				.setURL(process.env.URL)
-				.setTitle("List of all my commands")
+				.setTitle("Help Panel")
 				.setDescription(
-					"`" + commands.map((command) => command.name).join("`, `") + "`"
+					`\`#\` before command is owner only\n\`*\` after command is arguments required`
 				)
-
+				.addField(
+					"Commands",
+					"`" +
+						commands
+							.map(
+								(command) =>
+									`${command.ownerOnly ? "#" : ""}${command.name}${
+										command.args ? "*" : ""
+									}`
+							)
+							.join("`, `") +
+						"`"
+				)
 				.addField(
 					"Usage",
 					`\nYou can send \`${prefix}help [command name]\` to get info on a specific command!`
@@ -102,6 +114,6 @@ module.exports = {
 
 		// Finally send the embed.
 
-		message.channel.send({ embeds: [commandEmbed] });
+		message.reply({ embeds: [commandEmbed] });
 	},
 };

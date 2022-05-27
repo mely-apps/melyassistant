@@ -17,8 +17,30 @@ const { token, client_id, test_guild_id } = require("./config.json");
  * @type {Object}
  * @description Main Application Client */
 
+ const intents = [
+	"GUILDS",
+	"GUILD_MEMBERS",
+	"GUILD_BANS",
+	"GUILD_INTEGRATIONS",
+	"GUILD_WEBHOOKS",
+	"GUILD_INVITES",
+	"GUILD_VOICE_STATES",
+	"GUILD_PRESENCES",
+	"GUILD_MESSAGES",
+	"GUILD_MESSAGE_REACTIONS",
+	"GUILD_MESSAGE_TYPING",
+	"DIRECT_MESSAGES",
+	"DIRECT_MESSAGE_REACTIONS",
+	"DIRECT_MESSAGE_TYPING",
+];
+
 const client = new Client({
-	intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES],
+	intents: [intents],
+	ws: { intents: intents },
+	disableMentions: "everyone",
+	allowedMentions: {
+		repliedUser: false,
+	},
 });
 
 /**********************************************************************/
@@ -173,37 +195,37 @@ for (const module of buttonCommands) {
 /**********************************************************************/
 // Registration of Slash-Commands in Discord API
 
-const rest = new REST({ version: "9" }).setToken(token);
+// const rest = new REST({ version: "9" }).setToken(token);
 
-const commandJsonData = [
-	...Array.from(client.slashCommands.values()).map((c) => c.data.toJSON()),
-	...Array.from(client.contextCommands.values()).map((c) => c.data),
-];
+// const commandJsonData = [
+// 	...Array.from(client.slashCommands.values()).map((c) => c.data.toJSON()),
+// 	...Array.from(client.contextCommands.values()).map((c) => c.data),
+// ];
 
-(async () => {
-	try {
-		console.log("Started refreshing application (/) commands.");
+// (async () => {
+// 	try {
+// 		console.log("Started refreshing application (/) commands.");
 
-		await rest.put(
-			/**
-			 * Here we are sending to discord our slash commands to be registered.
-					There are 2 types of commands, guild commands and global commands.
-					Guild commands are for specific guilds and global ones are for all.
-					In development, you should use guild commands as guild commands update
-					instantly, whereas global commands take upto 1 hour to be published. To
-					deploy commands globally, replace the line below with:
-				Routes.applicationCommands(client_id)
-			 */
+// 		await rest.put(
+// 			/**
+// 			 * Here we are sending to discord our slash commands to be registered.
+// 					There are 2 types of commands, guild commands and global commands.
+// 					Guild commands are for specific guilds and global ones are for all.
+// 					In development, you should use guild commands as guild commands update
+// 					instantly, whereas global commands take upto 1 hour to be published. To
+// 					deploy commands globally, replace the line below with:
+// 				Routes.applicationCommands(client_id)
+// 			 */
 
-			Routes.applicationGuildCommands(client_id, test_guild_id),
-			{ body: commandJsonData }
-		);
+// 			Routes.applicationGuildCommands(client_id, test_guild_id),
+// 			{ body: commandJsonData }
+// 		);
 
-		console.log("Successfully reloaded application (/) commands.");
-	} catch (error) {
-		console.error(error);
-	}
-})();
+// 		console.log("Successfully reloaded application (/) commands.");
+// 	} catch (error) {
+// 		console.error(error);
+// 	}
+// })();
 
 /**********************************************************************/
 // Registration of Message Based Chat Triggers
