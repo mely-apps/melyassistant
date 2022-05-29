@@ -7,7 +7,7 @@ module.exports = {
 		const { client, guild, member } = interaction;
 
 		const submissionChannel = await guild.channels.cache.find((c) =>
-			c.name.toLowerCase().includes("submissions")
+			c.name.toLowerCase().includes("ask-mely")
 		);
 
 		const question = interaction.fields.getTextInputValue("question");
