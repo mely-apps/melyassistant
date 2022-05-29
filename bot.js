@@ -38,9 +38,9 @@ const client = new Client({
 	intents: [intents],
 	ws: { intents: intents },
 	disableMentions: "everyone",
-	allowedMentions: {
-		repliedUser: false,
-	},
+	// allowedMentions: {
+	// 	repliedUser: false,
+	// },
 });
 
 /**********************************************************************/
