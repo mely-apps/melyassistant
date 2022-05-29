@@ -118,7 +118,9 @@ module.exports = {
 		if (command.permissions) {
 			const authorPerms = message.channel.permissionsFor(message.author);
 			if (!authorPerms || !authorPerms.has(command.permissions)) {
-				return message.reply({ content: "You can not do this!" });
+				return message.reply({
+					content: "You don't have the right to do this!",
+				});
 			}
 		}
 
