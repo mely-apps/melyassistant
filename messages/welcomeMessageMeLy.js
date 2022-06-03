@@ -5,6 +5,22 @@ module.exports = {
 	async execute(member) {
 		const { guild } = member;
 
+		if (member.user.bot) {
+			const botRole =
+				(await guild.roles.cache.find((r) => r.name.toLowerCase() == "bots")) ||
+				(await guild.roles.create({
+					name: "bots",
+					reason: "role to add all bots in",
+				}));
+
+			try {
+				await member.roles.add(botRole);
+			} catch (error) {
+				console.log(error);
+			}
+			return;
+		}
+
 		const welcomeChannel = await guild.channels.cache.find((c) =>
 			c.name.toLowerCase().includes("say-hi")
 		);

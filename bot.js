@@ -11,6 +11,7 @@ const { Client, Collection, Intents } = require("discord.js");
 const { REST } = require("@discordjs/rest");
 const { Routes } = require("discord-api-types/v9");
 const { token, client_id, test_guild_id } = require("./config.json");
+const jsoning = require("jsoning");
 
 /**
  * From v13, specifying the intents is compulsory.
@@ -21,6 +22,7 @@ const intents = [
 	"GUILDS",
 	"GUILD_MEMBERS",
 	"GUILD_BANS",
+	"GUILD_EMOJIS_AND_STICKERS",
 	"GUILD_INTEGRATIONS",
 	"GUILD_WEBHOOKS",
 	"GUILD_INVITES",
@@ -32,6 +34,7 @@ const intents = [
 	"DIRECT_MESSAGES",
 	"DIRECT_MESSAGE_REACTIONS",
 	"DIRECT_MESSAGE_TYPING",
+	"GUILD_SCHEDULED_EVENTS"
 ];
 
 const client = new Client({
@@ -79,6 +82,9 @@ client.contextCommands = new Collection();
 client.modalCommands = new Collection();
 client.cooldowns = new Collection();
 client.triggers = new Collection();
+client.db = {
+	askmely: new jsoning('database/askmely.json'),
+}
 
 /**********************************************************************/
 // Registration of Message-Based Commands

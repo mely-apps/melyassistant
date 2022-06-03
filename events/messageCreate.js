@@ -18,19 +18,13 @@ const escapeRegex = (string) => {
 module.exports = {
 	name: "messageCreate",
 
-	/**
-	 * @description Executes when a message is created and handle it.
-	 * @author Naman Vrati
-	 * @param {Object} message The message which was created.
-	 */
-
 	async execute(message) {
-		// Declares const to be used.
-
 		const { client, guild, channel, content, author } = message;
 
-		// Checks if the bot is mentioned in the message all alone and triggers onMention trigger.
-		// You can change the behavior as per your liking at ./messages/onMention.js
+		if (message.author.bot) return;
+
+		if (!guild || guild == null)
+			return require("../messages/dmMessage").execute(message);
 
 		if (
 			message.content == `<@${client.user.id}>` ||
@@ -40,16 +34,7 @@ module.exports = {
 			return;
 		}
 
-		/**
-		 * @description Converts prefix to lowercase.
-		 * @type {String}
-		 */
-
 		const checkPrefix = prefix.toLowerCase();
-
-		/**
-		 * @description Regex expression for mention prefix
-		 */
 
 		const prefixRegex = new RegExp(
 			`^(<@!?${client.user.id}>|${escapeRegex(checkPrefix)})\\s*`

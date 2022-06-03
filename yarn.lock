@@ -725,6 +725,13 @@
   "resolved" "https://registry.npmjs.org/json-buffer/-/json-buffer-3.0.1.tgz"
   "version" "3.0.1"
 
+"jsoning@^0.13.23":
+  "integrity" "sha512-a6KC57J/CI60vUtV1pKMqxr/eF0vU9OU5U2n39sro2tZkwHojK8T9AlCz4Btqvz/xfWVzkWfut/NIJxwMmQqvQ=="
+  "resolved" "https://registry.npmjs.org/jsoning/-/jsoning-0.13.23.tgz"
+  "version" "0.13.23"
+  dependencies:
+    "write-file-atomic" "^3.0.3"
+
 "keyv@^3.0.0":
   "integrity" "sha512-9ykJ/46SN/9KPM/sichzQ7OvXyGDYKGTaDlKMGCAlg2UK8KRy4jb0d8sFc+0Tt0YYnThq8X2RZgCg74RPxgcVA=="
   "resolved" "https://registry.npmjs.org/keyv/-/keyv-3.1.0.tgz"

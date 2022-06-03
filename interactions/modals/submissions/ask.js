@@ -4,34 +4,33 @@ module.exports = {
 	id: "askmely",
 
 	async execute(interaction) {
-		const { client, guild, member } = interaction;
-
-		const submissionChannel = await guild.channels.cache.find((c) =>
-			c.name.toLowerCase().includes("ask-mely")
-		);
+		const { client, guild, user } = interaction;
 
 		const question = interaction.fields.getTextInputValue("question");
 
-		const Embed = new Discord.MessageEmbed()
-			.setColor("RANDOM")
-			.setTitle("ASK MELY")
-			.setAuthor({
-				name: member.user.tag,
-				iconURL: member.user.displayAvatarURL({ dynamic: true }),
-			})
-			.setDescription(question)
-			.setFooter({
-				text: member.user.id,
+		if (!question || question.length <= 0)
+			return await interaction.reply({
+				content: "Bạn chưa điền vào gì hết!",
+				ephemeral: true,
 			});
 
-		await submissionChannel.send({
-			embeds: [Embed],
-		});
-
-		await interaction.reply({
-			content: "Cảm ơn bạn đã đặt câu hỏi!",
-			ephemeral: true,
-		});
+		if (
+			(await require("../../../modules/submissions/askmely")(
+				client,
+				guild,
+				user,
+				question
+			)) != -1
+		)
+			await interaction.reply({
+				content: "Cảm ơn bạn đã đặt câu hỏi!",
+				ephemeral: true,
+			});
+		else
+			await interaction.reply({
+				content: "Đã có lỗi xảy ra...",
+				ephemeral: true,
+			});
 		return;
 	},
 };

@@ -7,16 +7,44 @@ module.exports = {
 	// The data needed to register slash commands to Discord.
 	data: new SlashCommandBuilder()
 		.setName("ask")
-		.setDescription(
-			"Hỏi MeLy một câu"
+		.setDescription("Hỏi MeLy một câu")
+		.addStringOption((option) =>
+			option
+				.setName("question")
+				.setDescription("Điền câu hỏi bạn muốn hỏi MeLy")
+		)
+		.addBooleanOption((option) =>
+			option
+				.setName("anonymous")
+				.setDescription("Ẩn danh (Không áp dụng trong điền form)")
 		),
-		// .addStringOption((option) =>
-		// 	option
-		// 		.setName("command")
-		// 		.setDescription("The specific command to see the info of.")
-		// ),
 
 	async execute(interaction) {
+		const question = interaction.options.getString("question");
+		if (question) {
+			const { client, guild, user } = interaction;
+			const anonymous = interaction.options.getBoolean("anonymous");
+			if (
+				(await require("../../../modules/submissions/askmely")(
+					client,
+					guild,
+					user,
+					question,
+					anonymous
+				)) != -1
+			)
+				await interaction.reply({
+					content: "Cảm ơn bạn đã đặt câu hỏi!",
+					ephemeral: true,
+				});
+			else
+				await interaction.reply({
+					content: "Đã có lỗi xảy ra...",
+					ephemeral: true,
+				});
+			return;
+		}
+
 		const modal = new Discord.Modal()
 			.setCustomId("askmely")
 			.setTitle("Hỏi MeLy đi!");

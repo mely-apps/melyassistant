@@ -1,5 +1,6 @@
 # Custom
 /config.json
+database/*.json
 .vscode/
 
 # Logs
