@@ -53,9 +53,7 @@ module.exports = {
 				components: components(false),
 			})
 			.then(() => {
-				message.reply({
-					content: "Sent!",
-				});
+				message.react("✅")
 			})
 			.catch((e) => {
 				message.reply({

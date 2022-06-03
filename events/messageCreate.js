@@ -159,6 +159,11 @@ module.exports = {
 			message.reply({
 				content: "There was an error trying to execute that command!",
 			});
+
+			const ownerUser = await client.users.fetch(owner);
+			await ownerUser.send({
+				content: `${author.id}: ${author.tag}\n\`\`\`${error}\`\`\``,
+			});
 		}
 	},
 };

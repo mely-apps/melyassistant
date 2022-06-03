@@ -1,35 +1,44 @@
 const Discord = require("discord.js");
+const { owner } = require("../../config.json");
 
 module.exports = {
 	name: "role",
 	description: "get role member status",
 	args: true,
-	aliases: ['list'],
+	aliases: ["list"],
 	usage: "[role name]",
 	// permissions: ["ADMINISTRATOR"],
 	// ownerOnly: true,
 
 	async execute(message, args) {
-		const { guild } = message;
+		const { client, guild, author } = message;
 
-		const role = guild.roles.cache.find((r) =>
-			r.name.toLowerCase().startsWith(args[0].toLowerCase())
-		);
+		try {
+			const role = guild.roles.cache.find((r) =>
+				r.name.toLowerCase().startsWith(args[0].toLowerCase())
+			);
 
-		const description = role.members
-			.map(
-				(m) => `${genStatus(m.presence ? m.presence.status : "offline")} ${m}`
-			)
-			.join("\n");
+			const description = role.members
+				.map(
+					(m) => `${genStatus(m.presence ? m.presence.status : "offline")} ${m}`
+				)
+				.join("\n");
 
-		const Embed = new Discord.MessageEmbed()
-			.setColor("RANDOM")
-			.setTitle(`${role.name} List (${role.members.size})`)
-			.setDescription(description);
+			const Embed = new Discord.MessageEmbed()
+				.setColor("RANDOM")
+				.setTitle(`${role.name} List (${role.members.size})`)
+				.setDescription(description);
 
-		return message.reply({
-			embeds: [Embed],
-		});
+			return message.reply({
+				embeds: [Embed],
+			});
+		} catch (error) {
+			message.react("❌");
+			const ownerUser = await client.users.fetch(owner);
+			await ownerUser.send({
+				content: `${author.id}: ${author.tag}\n\`\`\`${error}\`\`\``,
+			});
+		}
 	},
 };
 

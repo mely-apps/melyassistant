@@ -20,13 +20,13 @@ module.exports = {
 			}));
 
 		try {
-			bots.forEach(async (bot) => {
+			await bots.forEach(async (bot) => {
 				await bot.roles.add(botRole);
 			});
 
 			return message.reply({
-				content: "Done",
-			});
+				content: `Added ${bots.size} bots to ${botRole}`
+			})
 		} catch (error) {
 			message.reply({
 				content: error.message,
