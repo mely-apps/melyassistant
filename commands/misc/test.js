@@ -9,6 +9,14 @@ module.exports = {
 	async execute(message, args) {
 		const { client, guild, member } = message;
 
-		client.emit("guildMemberAdd", member);
+		const channels = await guild.channels.fetch();
+		const categories = channels
+			.filter(
+				(c) =>
+					c.type == "GUILD_CATEGORY" && c.name.toLowerCase().includes("học")
+			)
+			.map((c) => c.id);
+
+		console.log(categories);
 	},
 };
