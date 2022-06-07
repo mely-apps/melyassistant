@@ -24,6 +24,10 @@ module.exports = {
 
 		const question = args.join(" ");
 
+		if (question.length > 45) return message.reply({
+				content: "question cannot greater than 45 characters",
+			});
+
 		const Embed = new Discord.MessageEmbed()
 			.setColor("RANDOM")
 			.setDescription(question)

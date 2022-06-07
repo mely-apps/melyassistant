@@ -5,7 +5,7 @@ module.exports = async (client, guild, user, question, anonymous = false) => {
 		const db = client.db.askmely;
 
 		const askmelyChannel = await guild.channels.cache.find((c) =>
-			c.name.toLowerCase().includes("ask-mely")
+			c.id === '980486431665434674'
 		);
 
 		if (!(await db.has(user.id))) await db.set(user.id, []);
@@ -35,7 +35,7 @@ module.exports = async (client, guild, user, question, anonymous = false) => {
 
 		if (anonymous === true) {
 			const submissionChannel = await guild.channels.cache.find((c) =>
-				c.name.toLowerCase().includes("submissions")
+				c.name.toLowerCase().includes("anonymous")
 			);
 
 			const anonymousEmbed = new Discord.MessageEmbed()
