@@ -58,6 +58,7 @@ module.exports = {
 			studyVoiceChannelIds.includes(newState.channelId)
 		) {
 			console.log(`${newState.id} join voice ${newState.channelId}`);
+			const textVoiceGif = "https://cdn.discordapp.com/attachments/977409725849272380/983607518301409280/img.gif"
 			const Embed = new MessageEmbed()
 				.setColor("RANDOM")
 				.setDescription(
@@ -67,6 +68,7 @@ module.exports = {
 			newState.member
 				.send({
 					embeds: [Embed],
+					files: [textVoiceGif]
 				})
 				.catch((e) => console.log(e));
 		}
