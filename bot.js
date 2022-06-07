@@ -85,6 +85,7 @@ client.triggers = new Collection();
 client.db = {
 	askmely: new jsoning('database/askmely.json'),
 }
+require("./modules/util/client")(client)
 
 /**********************************************************************/
 // Registration of Message-Based Commands

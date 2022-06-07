@@ -43,6 +43,7 @@
 		"discord.js": "^13.7.0",
 		"duration": "^0.2.2",
 		"jsoning": "^0.13.23",
+		"lang-detector": "^1.0.6",
 		"translate-google": "^1.5.0"
 	},
 	"devDependencies": {
