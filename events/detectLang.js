@@ -32,7 +32,7 @@ module.exports = {
 
 		const lang = res.detected.toLowerCase();
 
-		if (res.statistics[res.detected] < 2) return;
+		if (res.statistics[res.detected] < 5) return;
 
 		const codeBlockNonFormat = "\\`\\`\\`";
 		const codeBlockFormat = "```";
