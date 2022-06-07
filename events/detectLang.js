@@ -18,7 +18,7 @@ module.exports = {
 
 		if (!message.content) return;
 
-        if (message.mentions.users.size > 0 || (message.mentions.members.size > 0)) return;
+        if (message.mentions.users.size > 0 || message.mentions.members.size > 0) return;
 
 		const res = await detectLang(message.content, {
 			statistics: true,
