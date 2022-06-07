@@ -1,4 +1,7 @@
 const { prefix, owner, test_guild_id } = require("../config.json");
+const studyTimestamp = new Map();
+const { MessageEmbed } = require("discord.js");
+const Duration = require("duration");
 
 module.exports = {
 	name: "voiceStateUpdate",
@@ -22,6 +25,10 @@ module.exports = {
 			(await oldState.guild.channels.fetch()) ||
 			(await newState.guild.channels.fetch());
 
+		const hoiDap = channels.find((c) =>
+			c.name.toLowerCase().includes(`hỏi-đáp`)
+		);
+
 		const studyCategoryIds = channels
 			.filter(
 				(c) =>
@@ -42,23 +49,47 @@ module.exports = {
 			console.log(
 				`${newState.id} move from voice ${oldState.channelId} to ${newState.channelId}`
 			);
-            return;
+			return;
 		}
 
 		// tham gia kenh hoc tap
-		if (studyVoiceChannelIds.includes(newState.channelId)) {
+		if (
+			!oldState.channelId &&
+			studyVoiceChannelIds.includes(newState.channelId)
+		) {
 			console.log(`${newState.id} join voice ${newState.channelId}`);
-            newState.member.send({
-                content: `Cảm ơn bạn đã tham gia học với MeLy! 😁`
-            }).catch((e) => console.log(e))
+			const Embed = new MessageEmbed()
+				.setColor("RANDOM")
+				.setDescription(
+					`Xin chào cậu. Hiện MeLy ra thêm 1 danh mục: Học cùng MeLy và thí điểm với việc học lập trình C,C++,python. (Sẽ mở rộng nếu được nhiều cậu ủng hộ).\n\n- Hàng ngày, các cậu tham gia vào phòng voice học cùng MeLy nhé. Nếu có vấn đề, mọi người có thể chat (khung chat nằm bên cạnh phòng) hoặc tạo chủ đề hỏi đáp tại phòng ${hoiDap}\n\n- Vào những khung giờ 20:00 - 22:00 giờ hàng ngày, QTV sẽ để ý các phòng chat hơn và có thể sẽ hỗ trợ, chia sẻ cùng cậu những kiến thức, kinh nghiệm tại các phòng học này. MeLy khuyến khích các bạn mới nên tham gia các phòng tại khung giờ này!\n\n- Nếu cậu có thể tạo một buổi chia sẻ hay thảo luận nhỏ (được phép mở voice, share màn hình), có thể liên hệ trực tiếp đến MeLy nhé! 🥰`
+				);
+			studyTimestamp.set(newState.id, Date.now());
+			newState.member
+				.send({
+					embeds: [Embed],
+				})
+				.catch((e) => console.log(e));
 		}
 
 		// roi khoi kenh hoc tap
-		if (studyVoiceChannelIds.includes(oldState.channelId)) {
+		if (
+			!newState.channelId &&
+			studyVoiceChannelIds.includes(oldState.channelId)
+		) {
 			console.log(`${oldState.id} left voice ${oldState.channelId}`);
-            oldState.member.send({
-                content: `Cảm ơn bạn đã dành thời gian học với MeLy! 😭`
-            }).catch((e) => console.log(e))
+			if (studyTimestamp.has(oldState.id)) {
+				const duration = new Duration(
+					new Date(studyTimestamp.get(oldState.id)),
+					new Date()
+				);
+
+				oldState.member
+					.send({
+						content: `> Bạn đã học được \`${duration.toString(1,1)}\`!`,
+					})
+					.catch((e) => console.log(e));
+				studyTimestamp.delete(oldState.id);
+			}
 		}
 	},
 };

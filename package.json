@@ -41,6 +41,7 @@
 		"@discordjs/rest": "^0.4.1",
 		"discord-api-types": "^0.33.0",
 		"discord.js": "^13.7.0",
+		"duration": "^0.2.2",
 		"jsoning": "^0.13.23",
 		"translate-google": "^1.5.0"
 	},
