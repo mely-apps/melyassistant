@@ -10,7 +10,7 @@ module.exports = {
 
 		if (author.bot) return;
 
-		if (author.id !== "445102575314927617") return;
+		// if (author.id !== "445102575314927617") return;
 
 		if (!guild || guild == null) return;
 

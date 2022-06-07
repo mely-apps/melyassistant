@@ -2,8 +2,9 @@ const Discord = require("discord.js");
 
 module.exports = {
 	name: "createmodal",
-	description: "add all bots to role bots",
+	description: "create a modal",
 	args: true,
+	usage: "[channel id] [question]",
 	permissions: ["ADMINISTRATOR"],
 	// ownerOnly: true,
 
