@@ -12,14 +12,15 @@ module.exports = {
 
 		if (guild.id != test_guild_id) return;
 
-		if (!channel.name.toLowerCase().includes("notification")) return;
+		if (channel.id != "853907347994837012") return;
 
-		let emojies = await guild.emojis.fetch()
-		emojies = await emojies.filter(e => e.available)
-		const emojiAmount = Math.floor(Math.random() * (10 - 5) + 5)
+		let emojies = await guild.emojis.fetch();
+		emojies = await emojies.filter((e) => e.available);
+		const emojiAmount = Math.floor(Math.random() * (10 - 5) + 5);
+		
 		for (let i = 0; i < emojiAmount; i++) {
 			let emoji = await emojies.random();
-			await message.react(emoji)
+			await message.react(emoji);
 		}
 	},
 };

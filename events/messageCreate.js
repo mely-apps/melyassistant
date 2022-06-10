@@ -118,7 +118,31 @@ module.exports = {
 				reply += `\nThe proper usage would be: \`${prefix}${command.name} ${command.usage}\``;
 			}
 
+			if (command.options && command.options.length > 0) {
+				let options = command.options
+					.map((o) => `${prefix}${command.name} ${o.toLowerCase()}`)
+					.join("\n");
+
+				reply += `\n\`\`\`Example:\n${options}\`\`\``;
+				// `\n\`\`\`Usage:\n${options}\`\`\``;
+			}
+
 			return message.channel.send({ content: reply });
+		}
+
+		// missing options
+		if (
+			command.args &&
+			args.length &&
+			command.options &&
+			command.options.length > 0
+		) {
+			let options = command.options
+				.map((o) => `${prefix}${command.name} ${o.toLowerCase()}`)
+				.join("\n");
+			let reply = `Wrong input option.\nThe proper usage would be: \`${prefix}${command.name} ${command.usage}\`\n\`\`\`Usage:\n${options}\`\`\``;
+			if (!command.options.includes(args[0]))
+				return message.reply({ content: reply });
 		}
 
 		// Cooldowns

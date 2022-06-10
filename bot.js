@@ -61,6 +61,7 @@ const eventFiles = fs
 // Loop through all files and execute the event when it is actually emmited.
 for (const file of eventFiles) {
 	const event = require(`./events/${file}`);
+	if (event.skip) continue;
 	if (event.once) {
 		client.once(event.name, (...args) => event.execute(...args, client));
 	} else {
@@ -84,6 +85,8 @@ client.cooldowns = new Collection();
 client.triggers = new Collection();
 client.db = {
 	askmely: new jsoning('database/askmely.json'),
+	forum: new jsoning('database/forum.json'),
+	global: new jsoning('database/global.json'),
 }
 require("./modules/util/client")(client)
 
