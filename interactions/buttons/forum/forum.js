@@ -19,22 +19,31 @@ module.exports = {
 			.setCustomId("forummodal")
 			.setTitle("HỎI ĐÁP");
 
-		const questionInput = new Discord.TextInputComponent()
-			.setCustomId("question")
+		const topicInput = new Discord.TextInputComponent()
+			.setCustomId("topic")
 			.setRequired(true)
 			.setMinLength(10)
 			.setMaxLength(100)
-			.setPlaceholder("Câu hỏi của bạn...")
-			.setLabel("Bạn hãy điền câu hỏi muốn hỏi phía dưới!")
+			.setPlaceholder("Điền chủ đề...")
+			.setLabel("Chủ đề cần hỏi")
 			.setStyle("SHORT");
+
+		const questionInput = new Discord.TextInputComponent()
+			.setCustomId("question")
+			.setRequired(false)
+			.setPlaceholder("Điền câu hỏi...")
+			.setLabel("Câu hỏi")
+			.setStyle("PARAGRAPH");
+
+		const topicRow = new Discord.MessageActionRow().addComponents(topicInput);
 
 		const questionRow = new Discord.MessageActionRow().addComponents(
 			questionInput
 		);
 
-		modal.addComponents(questionRow);
+		modal.addComponents(topicRow, questionRow);
 
-		await interaction.showModal(modal)
+		await interaction.showModal(modal);
 		// await interaction.update();
 	},
 };

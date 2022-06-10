@@ -31,14 +31,14 @@ module.exports = {
 		const Embed = new MessageEmbed()
 			.setColor("RANDOM")
 			.setTitle("HỎI ĐÁP")
-			.setDescription("Bạn muốn đặt câu hỏi? Click nút ở dưới!");
+			.setDescription("Bạn muốn tạo chủ đề hỏi đáp?\nClick nút ở dưới!");
 
 		const row = [
 			new MessageActionRow().addComponents(
 				new MessageButton()
 					.setCustomId("forum")
 					.setDisabled(false)
-					.setStyle("PRIMARY")
+					.setStyle("SUCCESS")
 					.setLabel("ĐẶT CÂU HỎI")
 					.setEmoji("❓")
 			),

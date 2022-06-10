@@ -37,14 +37,14 @@ module.exports = {
 				const Embed = new Discord.MessageEmbed()
 					.setColor("RANDOM")
 					.setTitle("HỎI ĐÁP")
-					.setDescription("Bạn muốn đặt câu hỏi? Click nút ở dưới!");
+					.setDescription("Bạn muốn tạo chủ đề hỏi đáp?\nClick nút ở dưới!");
 
 				const row = [
 					new Discord.MessageActionRow().addComponents(
 						new Discord.MessageButton()
 							.setCustomId("forum")
 							.setDisabled(false)
-							.setStyle("PRIMARY")
+							.setStyle("SUCCESS")
 							.setLabel("ĐẶT CÂU HỎI")
 							.setEmoji("❓")
 					),

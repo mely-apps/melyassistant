@@ -6,36 +6,38 @@ module.exports = {
 		const { client, guild, member, channel } = interaction;
 		// console.log(channel);
 
-		const question = interaction.fields.getTextInputValue("question");
+		const topic = interaction.fields.getTextInputValue("topic");
 
-		if (/^ *$/.test(question) || /^\s*$/.test(question))
+		if (/^ *$/.test(topic) || /^\s*$/.test(topic))
 			return await interaction.reply({
 				content: "Bạn chưa điền vào gì hết...",
 				ephemeral: true,
 			});
 
-		const questionArray = question.trim().split(/\s+/);
+		const question = interaction.fields.getTextInputValue("question");
 
+		const topicArray = topic.trim().split(/\s+/);
+		const questionArray = question ? question.trim().split(/\s+/) : null;
+
+		// console.log(question, questionArray)
 		try {
 			channel.threads
 				.create({
-					name: `${questionArray.join(" ")}`,
+					name: `${topicArray.join(" ")}`,
 					reason: `Cau hoi cua ${interaction.user}`,
 				})
 				.then(async (threadChannel) => {
-					const Embed = [
-						new Discord.MessageEmbed()
-							.setTitle(questionArray.join(" "))
-							.setColor("RANDOM")
-							.setAuthor({
-								name: `${member.user.tag}`,
-								iconURL: member.displayAvatarURL({ dynamic: true }),
-							}),
-					];
-
+					const Embed = new Discord.MessageEmbed()
+						.setTitle(topicArray.join(" "))
+						.setColor("RANDOM")
+						.setDescription(questionArray == null ? "" : questionArray.join(" "))
+						.setAuthor({
+							name: `${member.user.tag}`,
+							iconURL: member.displayAvatarURL({ dynamic: true }),
+						});
 					await threadChannel.send({
 						content: `Câu hỏi của ${member}`,
-						embeds: Embed,
+						embeds: [Embed],
 					});
 
 					await interaction.reply({
