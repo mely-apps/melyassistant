@@ -37,7 +37,7 @@ module.exports = {
 				const Embed = new Discord.MessageEmbed()
 					.setColor("RANDOM")
 					.setTitle("HỎI ĐÁP")
-					.setDescription("Bạn muốn tạo chủ đề hỏi đáp?\nClick nút ở dưới!");
+					.setDescription("Bấm nút dưới và đặt câu hỏi");
 
 				const row = [
 					new Discord.MessageActionRow().addComponents(
@@ -46,7 +46,7 @@ module.exports = {
 							.setDisabled(false)
 							.setStyle("SUCCESS")
 							.setLabel("ĐẶT CÂU HỎI")
-							.setEmoji("❓")
+							.setEmoji("❔")
 					),
 				];
 
