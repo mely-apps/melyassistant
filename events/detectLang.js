@@ -6,7 +6,7 @@ module.exports = {
 	name: "messageCreate",
 
 	async execute(message) {
-		const { client, guild, channel, content, author } = message;
+		const { client, guild, channel, content, author, member } = message;
 
 		if (author.bot) return;
 
@@ -18,7 +18,8 @@ module.exports = {
 
 		if (!message.content) return;
 
-        if (message.mentions.users.size > 0 || message.mentions.members.size > 0) return;
+		if (message.mentions.users.size > 0 || message.mentions.members.size > 0)
+			return;
 
 		const res = await detectLang(message.content, {
 			statistics: true,
@@ -27,6 +28,8 @@ module.exports = {
 		if (res.detected == "Unknown") return;
 
 		if (message.content.includes("```")) return;
+
+		console.log(res);
 
 		// if (message.content.length > 1000) return;
 
@@ -37,35 +40,65 @@ module.exports = {
 		const codeBlockNonFormat = "\\`\\`\\`";
 		const codeBlockFormat = "```";
 
-		const row = [
-			new MessageActionRow().addComponents(
-				new MessageButton()
-					.setCustomId("save")
-					.setLabel("Lưu")
-					.setStyle("SECONDARY")
-					.setEmoji("💾")
-			),
-		];
+		let contentCodeBlock = `${codeBlockFormat}${lang}\n${content}\n${codeBlockFormat}`;
+
+		let object = {
+			content: contentCodeBlock,
+			username: `${displayName(member)}`,
+			avatarURL: member.displayAvatarURL({ dynamic: true }),
+		};
+
+		try {
+			const webhooks = await channel.fetchWebhooks();
+
+			if (!webhooks.size) {
+				await channel
+					.createWebhook(client.user.username + " detectLang")
+					.then(async (webhook) => {
+						await webhook
+							.send(object)
+							.catch(console.error);
+					})
+					.catch(console.error);
+			} else {
+				const webhook = await webhooks.first();
+				await webhook.send(object).catch(console.error);
+			}
+
+			if (message.deletable) await message.delete();
+		} catch (error) {
+			console.log(error);
+		}
+
+		// const row = [
+		// 	new MessageActionRow().addComponents(
+		// 		new MessageButton()
+		// 			.setCustomId("save")
+		// 			.setLabel("Lưu")
+		// 			.setStyle("SECONDARY")
+		// 			.setEmoji("💾")
+		// 	),
+		// ];
 
 		// console.log(res);
-		try {
-			await message
-				.reply({
-					content: `Hãy thêm dấu ${codeBlockNonFormat} vào đầu và cuối code của bạn để nó dễ nhìn hơn!\n__**Ví dụ:**__\n${codeBlockNonFormat}${lang}\n${example(
-						lang
-					)}\n${codeBlockNonFormat}\n__**Nó sẽ thành như này:**__\n${codeBlockFormat}${lang}\n${example(
-						lang
-					)}\n${codeBlockFormat}`,
-					components: row,
-				})
-				.then(async (msg) => {
-					setTimeout(async () => {
-						if (msg && msg.deletable) await msg.delete();
-					}, 30000);
-				});
-		} catch (error) {
-			console.log(error.message);
-		}
+		// try {
+		// 	await message
+		// 		.reply({
+		// 			content: `Hãy thêm dấu ${codeBlockNonFormat} vào đầu và cuối code của bạn để nó dễ nhìn hơn!\n__**Ví dụ:**__\n${codeBlockNonFormat}${lang}\n${example(
+		// 				lang
+		// 			)}\n${codeBlockNonFormat}\n__**Nó sẽ thành như này:**__\n${codeBlockFormat}${lang}\n${example(
+		// 				lang
+		// 			)}\n${codeBlockFormat}`,
+		// 			components: row,
+		// 		})
+		// 		.then(async (msg) => {
+		// 			setTimeout(async () => {
+		// 				if (msg && msg.deletable) await msg.delete();
+		// 			}, 30000);
+		// 		});
+		// } catch (error) {
+		// 	console.log(error.message);
+		// }
 	},
 };
 
@@ -92,4 +125,8 @@ function example(lang) {
 		case "php":
 			return `<?php\necho 'Hello World';\n?>`;
 	}
+}
+
+function displayName(member) {
+	return member.nickname ? member.nickname : member.user.username;
 }

@@ -17,27 +17,27 @@ module.exports = {
 		try {
 			channel.threads
 				.create({
-					name: `${TextAbstract(question, 20)}`,
-					autoArchiveDuration: 60,
+					name: `${TextAbstract(question, 100)}`,
 					reason: `Cau hoi cua ${interaction.user}`,
 				})
-				.then((threadChannel) => {
+				.then(async (threadChannel) => {
 					const Embed = [
 						new Discord.MessageEmbed()
 							.setDescription(question)
 							.setColor("RANDOM"),
 					];
 
-					threadChannel.send({
+					await threadChannel.send({
 						content: `Câu hỏi của ${member}`,
 						embeds: Embed,
 					});
+
+					await interaction.reply({
+						content: "Cảm ơn bạn đã đặt câu hỏi!",
+						ephemeral: true,
+					});
 				})
 				.catch((e) => console.log(e));
-			await interaction.reply({
-				content: "Cảm ơn bạn đã đặt câu hỏi!",
-				ephemeral: true,
-			});
 		} catch (error) {
 			await interaction.reply({
 				content: `Đã có lỗi xảy ra...\n\`\`\`${error.message}\`\`\``,

@@ -66,16 +66,11 @@ module.exports = {
 				`https://cdn.discordapp.com/attachments/975455262896951317/980289916225323008/Thiet_ke_chua_co_ten_1.jpg`
 			)
 			.setDescription(
-				`1️⃣ Hãy đọc ${rulesChannel} để nắm rõ luật server và nhận vai trò của mình trong ${getRoleChannel} để chọn những tính năng thú vị trong server.
-				2️⃣ Chat "say hi" với MeLy trong ${melyChat} để MeLy được làm quen nè!
-				3️⃣ Mọi sự kiện quan trọng sẽ được MeLy cập nhật trên fanpage **[Code MeLy](https://www.facebook.com/code.mely)**. Nhớ Like, follow để theo dõi những điều mới mẻ từ server nha!
-				4️⃣ Nếu có điều gì thắc mắc, hãy hỏi mọi người tại ${generalChat}. Ở đây không có gì ngoài thân thiện 😁
-
-				Note: Bạn có thể gõ ***,mely*** tại mọi nơi để biết thêm về máy chủ!`
+				`1️⃣ Hãy đọc ${rulesChannel} để nắm rõ luật server và nhận vai trò của mình trong ${getRoleChannel} để chọn những tính năng thú vị trong server.\n2️⃣ Chat "say hi" với MeLy trong ${melyChat} để MeLy được làm quen nè!\n3️⃣ Mọi sự kiện quan trọng sẽ được MeLy cập nhật trên fanpage **[Code MeLy](https://www.facebook.com/code.mely)**. Nhớ Like, follow để theo dõi những điều mới mẻ từ server nha!\n4️⃣ Nếu có điều gì thắc mắc, hãy hỏi mọi người tại ${generalChat}. Ở đây không có gì ngoài thân thiện 😁\n\nNote: Bạn có thể gõ ***,mely*** tại mọi nơi để biết thêm về máy chủ!`
 			);
 
 		return welcomeChannel.send({
-			content: "> " + content,
+			content: content,
 			embeds: [Embed],
 		});
 	},
