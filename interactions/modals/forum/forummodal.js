@@ -8,23 +8,29 @@ module.exports = {
 
 		const question = interaction.fields.getTextInputValue("question");
 
-		if (!question || question.length <= 0)
+		if (/^ *$/.test(question) || /^\s*$/.test(question))
 			return await interaction.reply({
-				content: "Bạn chưa điền vào gì hết!",
+				content: "Bạn chưa điền vào gì hết...",
 				ephemeral: true,
 			});
+
+		const questionArray = question.trim().split(/\s+/);
 
 		try {
 			channel.threads
 				.create({
-					name: `${TextAbstract(question, 100)}`,
+					name: `${questionArray.join(" ")}`,
 					reason: `Cau hoi cua ${interaction.user}`,
 				})
 				.then(async (threadChannel) => {
 					const Embed = [
 						new Discord.MessageEmbed()
-							.setDescription(question)
-							.setColor("RANDOM"),
+							.setTitle(questionArray.join(" "))
+							.setColor("RANDOM")
+							.setAuthor({
+								name: `${member.user.tag}`,
+								iconURL: member.displayAvatarURL({ dynamic: true }),
+							}),
 					];
 
 					await threadChannel.send({
@@ -33,7 +39,7 @@ module.exports = {
 					});
 
 					await interaction.reply({
-						content: "Cảm ơn bạn đã đặt câu hỏi!",
+						content: `Câu hỏi của bạn đã được gửi đến ${threadChannel}!`,
 						ephemeral: true,
 					});
 				})
@@ -47,16 +53,3 @@ module.exports = {
 		return;
 	},
 };
-
-function TextAbstract(text, length) {
-	if (text == null) {
-		return "";
-	}
-	if (text.length <= length) {
-		return text;
-	}
-	text = text.substring(0, length);
-	last = text.lastIndexOf(" ");
-	text = text.substring(0, last);
-	return text + "...";
-}

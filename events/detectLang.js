@@ -29,7 +29,7 @@ module.exports = {
 
 		if (message.content.includes("```")) return;
 
-		console.log(res);
+		// console.log(res);
 
 		// if (message.content.length > 1000) return;
 

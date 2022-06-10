@@ -18,6 +18,9 @@ module.exports = (client) => {
 		return client.users.fetch(id);
 	};
 
+	client.displayName = (member) =>
+		member.nickname ? member.nickname : member.user.username;
+
 	client.disableComponent = (message, state = true) => {
 		if (!message) return [];
 

@@ -21,8 +21,12 @@ module.exports = {
 
 		const questionInput = new Discord.TextInputComponent()
 			.setCustomId("question")
+			.setRequired(true)
+			.setMinLength(10)
+			.setMaxLength(100)
+			.setPlaceholder("Câu hỏi của bạn...")
 			.setLabel("Bạn hãy điền câu hỏi muốn hỏi phía dưới!")
-			.setStyle("PARAGRAPH");
+			.setStyle("SHORT");
 
 		const questionRow = new Discord.MessageActionRow().addComponents(
 			questionInput
