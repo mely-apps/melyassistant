@@ -25,6 +25,8 @@ module.exports = {
 		 * @type {Object}
 		 */
 
+		if (["next", "stop", "previous"].includes(interaction.customId)) return;
+
 		const command = client.buttonCommands.get(interaction.customId);
 
 		// If the interaction is not a command in cache, return error message.
