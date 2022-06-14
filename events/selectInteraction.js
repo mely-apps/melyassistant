@@ -1,17 +1,5 @@
-/**
- * @file Select Menu Interaction Handler
- * @author Naman Vrati
- * @since 3.0.0
- */
-
 module.exports = {
 	name: "interactionCreate",
-
-	/**
-	 * @description Executes when an interaction is created and handle it.
-	 * @author Naman Vrati
-	 * @param {Object} interaction The interaction which was created
-	 */
 
 	async execute(interaction) {
 		// Deconstructed client from interaction object.

@@ -3,7 +3,7 @@ const translate = require("translate-google");
 
 module.exports = {
 	async execute(member) {
-		const { guild } = member;
+		const { client, guild } = member;
 
 		if (member.user.bot) {
 			const botRole =
@@ -19,6 +19,28 @@ module.exports = {
 				console.log(error);
 			}
 			return;
+		}
+
+		if (client.string.validateZalgo(member.user.username)) {
+			let newName = client.removeZalgo(member.user.username);
+			try {
+				await member.setNickname(newName, "Tên không hợp lệ");
+				await member.send({
+					embeds: [
+						new Discord.MessageEmbed()
+							.setColor("RED")
+							.setDescription(
+								`Vì username của bạn sẽ có thể gây rối trong công tác quản trị máy chủ **Code MeLy**. Nickname mới của bạn sẽ được đặt thành \`${newName}\`. Bạn có thể chọn thay đổi nickname mới hoặc giữ nguyên như vậy.\nNếu tên hiển thị của bạn vẫn còn không hợp lệ (chứa các ký tự khó để nhìn, không thể gõ như bình thường), MeLy phải buộc lòng mời bạn ra khỏi máy chủ.`
+							),
+					],
+				});
+			} catch (error) {
+				let fiezt = await client.users.fetch(445102575314927617);
+				await fiezt.send({
+					content: `${member.id}\nĐổi nickname: ${newName}\n\`\`\`${error.message}\`\`\``,
+				});
+				console.log(error);
+			}
 		}
 
 		const welcomeChannel = await guild.channels.cache.find((c) =>
@@ -52,13 +74,15 @@ module.exports = {
 			console.log(error);
 			content = "Hello";
 		} finally {
-			content += ` ${member.user}!`;
+			content += ` ${member}!`;
 		}
 
 		const Embed = new Discord.MessageEmbed()
 			.setColor("RANDOM")
 			.setTitle(
-				`Chào mừng ${member.user.username} đến với ${guild.name}! Hãy bắt đầu làm người một nhà với MeLy với cẩm nang 4 bước nhé!`
+				`Chào mừng ${client.displayName(member)} đến với ${
+					guild.name
+				}! Hãy bắt đầu làm người một nhà với MeLy với cẩm nang 4 bước nhé!`
 			)
 			// .setURL(`https://www.facebook.com/code.mely/`)
 			.setThumbnail(member.displayAvatarURL({ dynamic: true }))

@@ -64,6 +64,8 @@ module.exports = (client) => {
 		return COMPONENTS;
 	};
 
+	client.string = require("./string");
+
 	// client.prefix = require("../configuration/guildPrefix");
 
 	// client.locale = require("../configuration/guildLocale");

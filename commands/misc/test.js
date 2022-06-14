@@ -9,14 +9,8 @@ module.exports = {
 	async execute(message, args) {
 		const { client, guild, member } = message;
 
-		const channels = await guild.channels.fetch();
-		const categories = channels
-			.filter(
-				(c) =>
-					c.type == "GUILD_CATEGORY" && c.name.toLowerCase().includes("học")
-			)
-			.map((c) => c.id);
-
-		console.log(categories);
+		message.reply({
+			content: `${client.string.removeZalgo(args.join(" "))}\nfull zalgo: ${client.string.isFullofZalgo(args.join(" "))}\nhas zalgo: ${client.string.validateZalgo(args.join(" "))}`,
+		});
 	},
 };

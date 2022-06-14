@@ -1,41 +1,25 @@
 const Discord = require("discord.js");
+const { SlashCommandBuilder } = require("@discordjs/builders");
 
 module.exports = {
-	name: "checkname",
-	description: "check your display names if its suitable or not",
-	// args: true,
-	// permissions: ["ADMINISTRATOR"],
-	// ownerOnly: true,
+	data: new SlashCommandBuilder()
+		.setName("checkname")
+		.setDescription("Kiểm tra xem tên có hợp lệ?")
+		.addUserOption((option) =>
+			option.setName("user").setDescription("Chọn người dùng")
+		),
 
-	async execute(message, args) {
-		const { client, guild, member, channel } = message;
+	async execute(interaction) {
+		const { client, guild } = interaction;
 
-		if (args.length) {
-			const matches = args[0]
-				.matchAll(Discord.MessageMentions.USERS_PATTERN)
-				.next().value;
+		const member = interaction.options.getMember("user") || interaction.member;
 
-			const memberId = matches ? matches[1] : args[0];
-
-			const memberToCheck = (await guild.members.cache.has(memberId))
-				? (await guild.members.cache.get(memberId)) ||
-				  (await guild.members.fetch(memberId))
-				: undefined;
-
-			if (!memberToCheck)
-				return message.reply({
-					content: `Cannot find that user in this guild`,
-				});
-			return message.reply({
-				content: `${result(
-					isSuitable(client.displayName(memberToCheck).toLowerCase()),
-					memberToCheck
-				)}`,
-			});
-		}
-
-		return message.reply({
-			content: `${result(isSuitable(client.displayName(member).toLowerCase()), member)}`,
+		return await interaction.reply({
+			content: `${result(
+				isSuitable(client.displayName(member).toLowerCase()),
+				member
+			)}`,
+			ephemeral: true,
 		});
 
 		function result(state = true, member) {
@@ -113,3 +97,4 @@ function isFullofEmoji(s) {
 function validateVietnamese(s) {
 	return /[ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚÝàáâãèéêệìíòóôõọùúýĂăĐđĨĩŨũƠơƯưạẠ-ỹ]+/g.test(s);
 }
+

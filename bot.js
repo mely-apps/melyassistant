@@ -269,19 +269,19 @@ const commandJsonData = [
  * @description All trigger categories aka folders.
  */
 
-// const triggerFolders = fs.readdirSync("./triggers");
+const triggerFolders = fs.readdirSync("./triggers");
 
-// // Loop through all files and store commands in commands collection.
+// Loop through all files and store commands in commands collection.
 
-// for (const folder of triggerFolders) {
-// 	const triggerFiles = fs
-// 		.readdirSync(`./triggers/${folder}`)
-// 		.filter((file) => file.endsWith(".js"));
-// 	for (const file of triggerFiles) {
-// 		const trigger = require(`./triggers/${folder}/${file}`);
-// 		client.triggers.set(trigger.name, trigger);
-// 	}
-// }
+for (const folder of triggerFolders) {
+	const triggerFiles = fs
+		.readdirSync(`./triggers/${folder}`)
+		.filter((file) => file.endsWith(".js"));
+	for (const file of triggerFiles) {
+		const trigger = require(`./triggers/${folder}/${file}`);
+		client.triggers.set(trigger.name, trigger);
+	}
+}
 
 // Login into your client application with bot's token.
 

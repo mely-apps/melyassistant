@@ -1,49 +1,47 @@
 const Discord = require("discord.js");
+const { MessageButtonPages } = require("discord-button-page");
 
 module.exports = {
-	name: "checkname",
-	description: "check your display names if its suitable or not",
+	name: "listfname",
+	description: "",
 	// args: true,
-	// permissions: ["ADMINISTRATOR"],
+	permissions: ["MANAGE_ROLES", "MANAGE_NICKNAMES", "MANAGE_MESSAGES"],
 	// ownerOnly: true,
 
 	async execute(message, args) {
 		const { client, guild, member, channel } = message;
 
-		if (args.length) {
-			const matches = args[0]
-				.matchAll(Discord.MessageMentions.USERS_PATTERN)
-				.next().value;
+		const members = await guild.members.fetch();
+		const unsuitableMembers = members
+			.map((m) => {
+				if (!isSuitable(client.displayName(m).toLowerCase()) && !m.user.bot)
+					return `ID: ${m.id} | ${client.displayName(m)}#${
+						m.user.discriminator
+					}`;
+			})
+			.filter((m) => m !== undefined);
 
-			const memberId = matches ? matches[1] : args[0];
+		const tempArray = [];
 
-			const memberToCheck = (await guild.members.cache.has(memberId))
-				? (await guild.members.cache.get(memberId)) ||
-				  (await guild.members.fetch(memberId))
-				: undefined;
+		while (unsuitableMembers.length) {
+			tempArray.push(unsuitableMembers.splice(0, 20));
+		}
 
-			if (!memberToCheck)
-				return message.reply({
-					content: `Cannot find that user in this guild`,
-				});
+		const pages = tempArray.map((c) =>
+			new Discord.MessageEmbed().setDescription(`\`\`\`${c.join("\n")}\`\`\``)
+		);
+
+		if (pages.length < 2)
 			return message.reply({
-				content: `${result(
-					isSuitable(client.displayName(memberToCheck).toLowerCase()),
-					memberToCheck
-				)}`,
+				content: `\`\`\`${unsuitableMembers.join("\n")}\`\`\``,
 			});
-		}
 
-		return message.reply({
-			content: `${result(isSuitable(client.displayName(member).toLowerCase()), member)}`,
-		});
+		const embedPages = new MessageButtonPages()
+			.setDuration(300000)
+			.setEmbeds(pages)
+			.setReply(true);
 
-		function result(state = true, member) {
-			const displayName = client.displayName(member);
-			return state
-				? `Tên \`${displayName}\` hợp lệ.`
-				: `Tên \`${displayName}\` không hợp lệ.`;
-		}
+		embedPages.build(message);
 	},
 };
 
