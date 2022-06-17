@@ -46,28 +46,21 @@ module.exports = {
 			content: contentCodeBlock,
 			username: `${displayName(member)}`,
 			avatarURL: member.displayAvatarURL({ dynamic: true }),
+			threadId: channel.isThread() ? channel.id : null,
 		};
+
 		try {
-			if (channel.isThread()) {
-				await channel.send({
-					content: object.content,
-					components: [
-						new MessageActionRow().addComponents(
-							new MessageButton()
-								.setCustomId(author.id)
-								.setDisabled(true)
-								.setStyle("SECONDARY")
-								.setLabel(`${author.tag}`)
-						),
-					],
-				});
-			} else {
-				const webhooks = await channel.fetchWebhooks();
-				const webhook = webhooks.size
-					? await webhooks.first()
-					: await channel.createWebhook(client.user.username + " detectLang");
-				await webhook.send(object).catch(console.error);
-			}
+			const webhooks = channel.isThread()
+				? await channel.parent.fetchWebhooks()
+				: await channel.fetchWebhooks();
+			const webhook = webhooks.size
+				? await webhooks.first()
+				: channel.isThread()
+				? await channel.parent.createWebhook(
+						client.user.username + " detectLang"
+				  )
+				: await channel.createWebhook(client.user.username + " detectLang");
+			await webhook.send(object).catch(console.error);
 			if (message.deletable) await message.delete();
 		} catch (error) {
 			console.log(error);

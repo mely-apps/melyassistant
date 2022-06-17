@@ -1,9 +1,3 @@
-/**
- * @file Main File of the bot, responsible for registering events, commands, interactions etc.
- * @author Naman Vrati
- * @version 3.0.0
- */
-
 // Declare constants which will be used throughout the bot.
 
 const fs = require("fs");
@@ -12,11 +6,6 @@ const { REST } = require("@discordjs/rest");
 const { Routes } = require("discord-api-types/v9");
 const { token, client_id, test_guild_id } = require("./config.json");
 const jsoning = require("jsoning");
-
-/**
- * From v13, specifying the intents is compulsory.
- * @type {Object}
- * @description Main Application Client */
 
 const intents = [
 	"GUILDS",
