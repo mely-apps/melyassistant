@@ -1,4 +1,4 @@
-const { prefix, owner, test_guild_id } = require("../config.json");
+const { test_guild_id } = require("../config.json");
 const detectLang = require("lang-detector");
 const { MessageActionRow, MessageButton } = require("discord.js");
 
@@ -47,24 +47,27 @@ module.exports = {
 			username: `${displayName(member)}`,
 			avatarURL: member.displayAvatarURL({ dynamic: true }),
 		};
-
 		try {
-			const webhooks = await channel.fetchWebhooks();
-
-			if (!webhooks.size) {
-				await channel
-					.createWebhook(client.user.username + " detectLang")
-					.then(async (webhook) => {
-						await webhook
-							.send(object)
-							.catch(console.error);
-					})
-					.catch(console.error);
+			if (channel.isThread()) {
+				await channel.send({
+					content: object.content,
+					components: [
+						new MessageActionRow().addComponents(
+							new MessageButton()
+								.setCustomId(author.id)
+								.setDisabled(true)
+								.setStyle("SECONDARY")
+								.setLabel(`${author.tag}`)
+						),
+					],
+				});
 			} else {
-				const webhook = await webhooks.first();
+				const webhooks = await channel.fetchWebhooks();
+				const webhook = webhooks.size
+					? await webhooks.first()
+					: await channel.createWebhook(client.user.username + " detectLang");
 				await webhook.send(object).catch(console.error);
 			}
-
 			if (message.deletable) await message.delete();
 		} catch (error) {
 			console.log(error);
