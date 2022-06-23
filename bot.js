@@ -5,7 +5,7 @@ const { Client, Collection, Intents } = require("discord.js");
 const { REST } = require("@discordjs/rest");
 const { Routes } = require("discord-api-types/v9");
 const { token, client_id, test_guild_id } = require("./config.json");
-const jsoning = require("jsoning");
+const { QuickDB } = require('quick.db');
 
 const intents = [
 	"GUILDS",
@@ -72,11 +72,7 @@ client.contextCommands = new Collection();
 client.modalCommands = new Collection();
 client.cooldowns = new Collection();
 client.triggers = new Collection();
-client.db = {
-	askmely: new jsoning('database/askmely.json'),
-	forum: new jsoning('database/forum.json'),
-	global: new jsoning('database/global.json'),
-}
+client.db = new QuickDB()
 require("./modules/util/client")(client)
 
 /**********************************************************************/

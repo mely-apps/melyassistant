@@ -6,19 +6,25 @@ module.exports = {
 	args: true,
 	ownerOnly: true,
 	options: ["delete", "set", "get"],
-	usage: "[set|get|delete] <channel ID>",
+	usage: "<channel ID>",
 
 	async execute(message, args) {
 		const { client, channel, guild } = message;
 
 		const option = args.shift();
+		const db = client.db.table("settings");
 
 		switch (option) {
 			case "get":
+				if (!(await db.has("forum")) || !(await db.has("forum.id")))
+					return message.reply({
+						content: `Forum channel is not exist`,
+					});
+
 				message.reply({
-					content: `Channel: ${await client.db.global.get(
-						"forumChannel"
-					)}\nPanel: ${await client.db.forum.get("panel")}`,
+					content: `Channel: <#${await db.get(
+						"forum.id"
+					)}>\nPanelId: ${await db.get("forum.panelId")}`,
 				});
 				break;
 			case "set":
@@ -31,8 +37,6 @@ module.exports = {
 					return message.reply({
 						content: "Not exist channel",
 					});
-
-				await client.db.global.set("forumChannel", channelId);
 
 				const Embed = new Discord.MessageEmbed()
 					.setColor("RANDOM")
@@ -50,14 +54,11 @@ module.exports = {
 					),
 				];
 
-				const channelSet =
-					(await guild.channels.fetch(
-						await client.db.global.get("forumChannel")
-					)) || null;
+				const channelSet = (await guild.channels.fetch(channelId)) || null;
 
 				if (channelSet == null)
 					return message.reply({
-						content: `Channel: ${channelSet}`,
+						content: `Channel: <#${channelSet}>`,
 					});
 
 				const msg = await channelSet.send({
@@ -65,55 +66,55 @@ module.exports = {
 					components: row,
 				});
 
-				await client.db.forum.set("panel", msg.id);
+				await db.set("forum", { id: channelId, panelId: msg.id });
 
 				return message.reply({
-					content: `Channel: ${channelSet}\nPanel: ${msg.url}`,
+					content: `Channel: ${channelSet}\nPanelURL: ${msg.url}`,
 				});
 			case "delete":
+				if (!(await db.has("forum")) || !(await db.has("forum.id")))
+					return message.reply({
+						content: `Forum channel is not exist`,
+					});
 				try {
 					const channelDelete =
-						(await client.db.global.get("forumChannel")) != null
-							? (await guild.channels.fetch(
-									await client.db.global.get("forumChannel")
-							  )) || null
+						(await db.get("forum.id")) != null
+							? (await guild.channels.fetch(await db.get("forum.id"))) || null
 							: null;
 
 					if (channelDelete == null)
 						return message.reply({
-							content: `Channel: ${await client.db.global.delete(
-								"forumChannel"
-							)}\nPanel: ${await client.db.forum.delete("panel")}`,
+							content: `Channel: ${await db.delete(
+								"forum.id"
+							)}\nPanel: ${await db.delete("forum.panelId")}`,
 						});
 
 					const panelDelete =
-						(await client.db.forum.get("panel")) != null
+						(await db.get("forum.panelId")) != null
 							? (await channelDelete.messages.fetch(
-									await client.db.forum.get("panel")
+									await db.get("forum.panelId")
 							  )) || null
 							: null;
 
 					if (panelDelete == null)
 						return message.reply({
-							content: `Channel: ${await client.db.global.delete(
-								"forumChannel"
-							)}\nPanel: ${await client.db.forum.delete("panel")}`,
+							content: `Channel: ${await db.delete(
+								"forum.id"
+							)}\nPanel: ${await db.delete("forum.panelId")}`,
 						});
 
 					if (panelDelete.deletable) await panelDelete.delete();
 
-					return message.reply({
-						content: `Channel: ${await client.db.global.delete(
-							"forumChannel"
-						)}\nPanel: ${await client.db.forum.delete("panel")}`,
+					const status = await db.delete("forum");
+
+					await message.reply({
+						content: `Success: ${status}`,
 					});
+					return;
 				} catch (error) {
-					return message.reply({
-						content: `Channel: ${await client.db.global.delete(
-							"forumChannel"
-						)}\nPanel: ${await client.db.forum.delete("panel")}\n\`\`\`${
-							error.message
-						}\`\`\``,
+					const status = await db.delete("forum");
+					await message.reply({
+						content: `Success: ${status}\n\`\`\`${error.message}\`\`\``,
 					});
 				}
 		}

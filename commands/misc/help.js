@@ -108,7 +108,7 @@ module.exports = {
 		if (command.usage)
 			commandEmbed.addField(
 				"Usage",
-				`\`${prefix}${command.name} ${command.usage}\``,
+				`\`${prefix}${command.name} ${!command.options ? "" : `[${command.options.join("|")}] `}${command.usage}\``,
 				true
 			);
 

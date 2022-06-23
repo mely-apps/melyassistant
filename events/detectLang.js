@@ -50,16 +50,16 @@ module.exports = {
 		};
 
 		try {
-			const webhooks = channel.isThread()
-				? await channel.parent.fetchWebhooks()
-				: await channel.fetchWebhooks();
+			const webhooks = (
+				channel.isThread()
+					? await channel.parent.fetchWebhooks()
+					: await channel.fetchWebhooks()
+			).filter((w) => w.owner.id == client.user.id);
 			const webhook = webhooks.size
 				? await webhooks.first()
 				: channel.isThread()
-				? await channel.parent.createWebhook(
-						client.user.username + " detectLang"
-				  )
-				: await channel.createWebhook(client.user.username + " detectLang");
+				? await channel.parent.createWebhook(client.user.username)
+				: await channel.createWebhook(client.user.username);
 			await webhook.send(object).catch(console.error);
 			if (message.deletable) await message.delete();
 		} catch (error) {

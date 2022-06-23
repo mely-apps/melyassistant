@@ -13,7 +13,7 @@ module.exports = {
 
 	async execute(message, args) {
 		const { client } = message;
-
+		
 		await rest
 			.get(Routes.applicationGuildCommands(client_id, test_guild_id))
 			.then((data) => {

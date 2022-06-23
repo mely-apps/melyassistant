@@ -14,8 +14,14 @@ module.exports = {
 	 */
 
 	async execute(message) {
-		return message.channel.send(
-			`Hi ${message.author}! My prefix is \`${prefix}\`, get help by \`${prefix}help\``
-		);
+		return await message.channel
+			.send(
+				`Hi ${message.author}! My prefix is \`${prefix}\`, get help by \`${prefix}help\``
+			)
+			.then((m) => {
+				setTimeout(() => {
+					if (m.deletable) m.delete();
+				}, 30000);
+			});
 	},
 };

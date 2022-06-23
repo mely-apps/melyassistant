@@ -9,10 +9,11 @@ module.exports = {
 		if (!guild || guild == null) return;
 
 		if (guild.id != test_guild_id) return;
+		const db = client.db.table("settings");
 
-		if (!(await client.db.global.has("forumChannel"))) return;
+		if (!(await db.has("forum")) || !(await db.has("forum.id"))) return;
 
-		if (channel.id != (await client.db.global.get("forumChannel"))) return;
+		if (channel.id != (await db.get("forum.id"))) return;
 
 		if (author.id == client.user.id && message.type === "REPLY") return;
 
@@ -49,15 +50,15 @@ module.exports = {
 			components: row,
 		});
 
-		if ((await client.db.forum.get("panel")) != null) {
-			const oldPanelId = await client.db.forum.get("panel");
+		if ((await db.get("forum.panelId")) != null) {
+			const oldPanelId = await db.get("forum.panelId");
 
 			const oldPanel = await channel.messages.fetch(oldPanelId);
 
 			if (oldPanel.deletable) await oldPanel.delete();
 		}
 
-		await client.db.forum.set("panel", msg.id);
+		await db.set("forum.panelId", msg.id);
 
 		// console.log(lastMessage);
 	},

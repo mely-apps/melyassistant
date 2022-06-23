@@ -1,5 +1,6 @@
 const Discord = require("discord.js");
 const { owner } = require("../../config.json");
+const { MessageButtonPages } = require("discord-button-page");
 
 module.exports = {
 	name: "role",
@@ -18,20 +19,46 @@ module.exports = {
 				r.name.toLowerCase().startsWith(args[0].toLowerCase())
 			);
 
-			const description = role.members
-				.map(
-					(m) => `${genStatus(m.presence ? m.presence.status : "offline")} ${m}`
-				)
-				.join("\n");
+			if (!role)
+				return message.reply({
+					content: "Cha thay gi ca?",
+				});
 
-			const Embed = new Discord.MessageEmbed()
-				.setColor("RANDOM")
-				.setTitle(`${role.name} List (${role.members.size})`)
-				.setDescription(description);
+			const roleStatus = role.members.map(
+				(m) =>
+					`${genStatus(m.presence ? m.presence.status : "offline")} ${m} (${
+						m.user.tag
+					})`
+			);
 
-			return message.reply({
-				embeds: [Embed],
-			});
+			const tempArray = [];
+			while (roleStatus.length) {
+				tempArray.push(roleStatus.splice(0, 20));
+			}
+
+			const pages = tempArray.map((c) =>
+				new Discord.MessageEmbed()
+					.setTitle(`${role.name} List (${role.members.size})`)
+					.setColor("RANDOM")
+					.setDescription(`${c.join("\n")}`)
+			);
+
+			if (!pages.length)
+				return message.reply({
+					content: "Cha thay gi ca?",
+				});
+
+			if (pages.length < 2)
+				return message.reply({
+					embeds: pages,
+				});
+
+			const embedPages = new MessageButtonPages()
+				.setDuration(300000)
+				.setEmbeds(pages)
+				.setReply(true);
+
+			embedPages.build(message);
 		} catch (error) {
 			message.react("❌");
 			const ownerUser = await client.users.fetch(owner);

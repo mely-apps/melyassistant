@@ -1,7 +1,9 @@
 # Custom
 /config.json
 database/*.json
+database/*.sqlite
 .vscode/
+*.sqlite
 
 # Logs
 logs

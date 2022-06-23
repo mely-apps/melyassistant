@@ -115,7 +115,7 @@ module.exports = {
 			let reply = `You didn't provide any arguments, ${message.author}!`;
 
 			if (command.usage) {
-				reply += `\nThe proper usage would be: \`${prefix}${command.name} ${command.usage}\``;
+				reply += `\nThe proper usage would be: \`${prefix}${command.name} ${!command.options ? "" : `[${command.options.join("|")}] `}${command.usage}\``;
 			}
 
 			if (command.options && command.options.length > 0) {
@@ -140,7 +140,11 @@ module.exports = {
 			let options = command.options
 				.map((o) => `${prefix}${command.name} ${o.toLowerCase()}`)
 				.join("\n");
-			let reply = `Wrong input option.\nThe proper usage would be: \`${prefix}${command.name} ${command.usage}\`\n\`\`\`Usage:\n${options}\`\`\``;
+			let reply = `Wrong input option.\nThe proper usage would be: \`${prefix}${
+				command.name
+			} [${command.options.join("|")}] ${
+				command.usage
+			}\`\n\`\`\`Usage:\n${options}\`\`\``;
 			if (!command.options.includes(args[0]))
 				return message.reply({ content: reply });
 		}

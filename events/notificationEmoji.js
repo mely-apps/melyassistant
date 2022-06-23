@@ -12,12 +12,16 @@ module.exports = {
 
 		if (guild.id != test_guild_id) return;
 
-		if (channel.id != "853907347994837012") return;
+		const db = client.db.table("settings");
+		
+		if (!(await db.has("emore"))) return;
+
+		if (!(await db.get("emore")).includes(channel.id)) return;
 
 		let emojies = await guild.emojis.fetch();
 		emojies = await emojies.filter((e) => e.available);
 		const emojiAmount = Math.floor(Math.random() * (10 - 5) + 5);
-		
+
 		for (let i = 0; i < emojiAmount; i++) {
 			let emoji = await emojies.random();
 			await message.react(emoji);
