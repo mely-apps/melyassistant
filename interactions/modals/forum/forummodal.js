@@ -30,15 +30,21 @@ module.exports = {
 					const Embed = new Discord.MessageEmbed()
 						.setTitle(topicArray.join(" "))
 						.setColor("RANDOM")
-						.setDescription(questionArray == null ? "" : questionArray.join(" "))
+						.setDescription(
+							questionArray == null ? "" : questionArray.join(" ")
+						)
 						.setAuthor({
 							name: `${member.user.tag}`,
 							iconURL: member.displayAvatarURL({ dynamic: true }),
 						});
-					await threadChannel.send({
-						content: `Câu hỏi của ${member}`,
-						embeds: [Embed],
-					});
+					await threadChannel
+						.send({
+							content: `Câu hỏi của ${member}`,
+							embeds: [Embed],
+						})
+						.then(async (m) => {
+							if (m.pinnable) await m.pin();
+						});
 
 					await interaction.reply({
 						content: `Câu hỏi của bạn đã được gửi đến ${threadChannel}!`,

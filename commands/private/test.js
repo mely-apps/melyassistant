@@ -9,8 +9,7 @@ module.exports = {
 	async execute(message, args) {
 		const { client, guild, member } = message;
 
-		message.reply({
-			content: `${client.string.removeZalgo(args.join(" "))}\nfull zalgo: ${client.string.isFullofZalgo(args.join(" "))}\nhas zalgo: ${client.string.validateZalgo(args.join(" "))}`,
-		});
+		const thanks = client.db.table("thanks")
+		await thanks.deleteAll()
 	},
 };
