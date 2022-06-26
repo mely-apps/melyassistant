@@ -6,7 +6,7 @@
 
 // Declares constants (destructured) to be used in this file.
 
-const { Collection } = require("discord.js");
+const { Collection, DMChannel } = require("discord.js");
 const { prefix, owner } = require("../config.json");
 
 // Prefix regex, we will use to match in mention prefix.
@@ -23,8 +23,16 @@ module.exports = {
 
 		if (message.author.bot) return;
 
-		if (!guild || guild == null)
+		if (
+			!guild ||
+			guild == null ||
+			channel.type == 1 ||
+			channel.type.toLowerCase() == "dm" ||
+			channel instanceof DMChannel
+		) {
+			console.log(message);
 			return require("../messages/dmMessage").execute(message);
+		}
 
 		if (
 			message.content == `<@${client.user.id}>` ||
@@ -115,7 +123,9 @@ module.exports = {
 			let reply = `You didn't provide any arguments, ${message.author}!`;
 
 			if (command.usage) {
-				reply += `\nThe proper usage would be: \`${prefix}${command.name} ${!command.options ? "" : `[${command.options.join("|")}] `}${command.usage}\``;
+				reply += `\nThe proper usage would be: \`${prefix}${command.name} ${
+					!command.options ? "" : `[${command.options.join("|")}] `
+				}${command.usage}\``;
 			}
 
 			if (command.options && command.options.length > 0) {

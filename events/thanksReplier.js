@@ -67,7 +67,7 @@ module.exports = {
 					.setCustomId("tksdown")
 					.setEmoji("👎")
 					.setDisabled(state)
-					.setLabel("Không thích")
+					.setLabel("Chưa thích")
 					.setStyle("DANGER")
 			),
 		];
@@ -114,6 +114,7 @@ module.exports = {
 			};
 
 			await db.push(replier.id, data);
+			client.actionlog("+thankPoint", `From ${asker.id} to ${replier.id}`);
 
 			if (msg.deletable) return msg.delete();
 		});

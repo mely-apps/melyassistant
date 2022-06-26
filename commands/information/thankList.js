@@ -11,6 +11,7 @@ module.exports = {
 		"tkstop",
 		"tkslb",
 		"tkslist",
+		"tksls",
 	],
 	description: "get mely thank points list",
 
@@ -22,7 +23,7 @@ module.exports = {
 			.map((key) => [key.id, key.value.length])
 			.sort((a, b) => b[1] - a[1]);
 
-		const thankContentArray = await thanksArray.map((e) => {
+		const thankContentArray = thanksArray.map((e) => {
 			if (guild.members.cache.has(e[0])) {
 				const mem = guild.members.cache.get(e[0]);
 				return `${mem} (${mem.user.tag}): ${e[1]}`;

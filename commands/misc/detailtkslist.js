@@ -3,28 +3,37 @@ const { MessageButtonPages } = require("discord-button-page");
 
 module.exports = {
 	name: "detailtkslist",
-	aliases: [
-		"detailthanklist",
-        "dtkslist"
-	],
+	aliases: ["detailthanklist", "dtkslist", "dtksls"],
+	// args: true,
 	description: "get mely thank points list",
-    permissions: ["ADMINISTRATOR"],
+	usage: "<memberId>",
+	permissions: ["ADMINISTRATOR"],
 
 	async execute(message, args) {
 		const { client, guild, author } = message;
 
 		const thankTable = client.db.table("thanks");
-		const thanksArray = (await thankTable.all())
-			.map((key) => {
-                key.value
-            });
+		let thanksArray = !args.length
+			? await thankTable.all()
+			: (await thankTable.get(args[0])) || null;
 
-		const thankContentArray = thanksArray.map((e) => {
-			if (guild.members.cache.has(e[0])) {
-				const mem = guild.members.cache.get(e[0]);
-				return `${mem} (${mem.user.tag}): ${e[1]}`;
-			}
-		});
+		if (thanksArray == null)
+			return message.reply({
+				content: "Cai j z?",
+			});
+
+		const thankContentArray = !args.length
+			? thanksArray
+					.map((d) =>
+						d.value.map((v) => {
+							return `\`${v.fromId}\`➡\`${d.id}\`❔\`${v.threadId}\`🕒\`${v.timestamp}\``;
+						})
+					)
+					.flat()
+					.filter((v) => typeof v !== "undefined")
+			: thanksArray.map((e) => {
+					return `\`${e.fromId}\`❔\`${e.threadId}\`🕒\`${e.timestamp}\``;
+			  });
 
 		const tempArray = [];
 

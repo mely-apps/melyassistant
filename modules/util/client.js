@@ -18,6 +18,17 @@ module.exports = (client) => {
 		return client.users.fetch(id);
 	};
 
+	client.getChannelId = (args) => {
+		var id, matches;
+		args.forEach((element, index) => {
+			if (index > 0 && id) return;
+			matches = element.match(/^<#?(\d+)>$/);
+			if (!matches) return;
+			return (id = matches[1]);
+		});
+		return id;
+	};
+
 	client.displayName = (member) =>
 		member.nickname ? member.nickname : member.user.username;
 
@@ -32,6 +43,7 @@ module.exports = (client) => {
 			new Discord.MessageActionRow().addComponents([
 				row.components.map((component) => {
 					switch (component.type) {
+						case 2:
 						case "BUTTON":
 							const button = new Discord.MessageButton()
 								.setEmoji(component.emoji)
@@ -40,16 +52,21 @@ module.exports = (client) => {
 
 							if (component.style === "LINK") button.setURL(component.url);
 							else {
-								button.setCustomId(component.customId).setDisabled(state);
+								button
+									.setCustomId(component.customId || component.custom_id)
+									.setDisabled(state);
 							}
 							// console.log(button);
 							return button;
 
+						case 3:
 						case "SELECT_MENU":
 							// console.log(component)
 							return new Discord.MessageSelectMenu()
-								.setCustomId(String(component.customId))
+								.setCustomId(String(component.customId || component.custom_id))
 								.setPlaceholder(String(component.placeholder))
+								.setMinValues(component.minValues || component.min_values)
+								.setMaxValues(component.maxValues || component.max_values)
 								.addOptions({
 									label: "A",
 									value: "B",
@@ -65,6 +82,44 @@ module.exports = (client) => {
 	};
 
 	client.string = require("./string");
+
+	client.actionlog = async (
+		action,
+		detail = null,
+		actor = null,
+		victim = null
+	) => {
+		const sdb = client.db.table("settings");
+
+		if (!(await sdb.has("actionWebhookURL"))) return;
+		const actionWebhookURL = await sdb.get("actionWebhookURL");
+		const webhookClient = new Discord.WebhookClient({ url: actionWebhookURL });
+
+		const Embed = new Discord.MessageEmbed()
+			.setColor("RANDOM")
+			.setTitle(action)
+			.setTimestamp();
+
+		if (detail !== null) Embed.setDescription(detail);
+
+		if (actor !== null)
+			Embed.setAuthor({
+				name: actor.name || actor,
+				iconURL: actor.iconURL || undefined,
+			});
+
+		if (victim !== null)
+			Embed.setFooter({
+				text: victim.name || victim,
+				iconURL: victim.iconURL || undefined,
+			});
+
+		await webhookClient.send({
+			username: `${client.user.username} log`,
+			avatarURL: client.user.displayAvatarURL(),
+			embeds: [Embed],
+		});
+	};
 
 	// client.prefix = require("../configuration/guildPrefix");
 
