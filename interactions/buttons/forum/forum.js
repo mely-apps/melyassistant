@@ -4,7 +4,8 @@ module.exports = {
 	id: "forum",
 	async execute(interaction) {
 		const { client, guild, message } = interaction;
-
+		const moduleTable = client.db.table("module");
+		if (!(await moduleTable.get("forum"))) return;
 		// message.channel.threads
 		// 	.create({
 		// 		name: `Cau hoi cua ${interaction.user.username}`,

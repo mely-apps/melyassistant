@@ -7,10 +7,16 @@ module.exports = {
 
 	async execute(message, args) {
 		const { client, guild, author } = message;
+		const moduleTable = client.db.table("module");
+		if (!(await moduleTable.get("thankPoint"))) return;
 
 		const thankTable = client.db.table("thanks");
 
-		if (!(await thankTable.has(author.id)))
+		if (
+			!(await thankTable.has(author.id)) ||
+			((await thankTable.has(author.id)) &&
+				(await thankTable.get(author.id)).length < 1)
+		)
 			return message
 				.reply({
 					content: `Bạn chưa có điểm nào :< Hãy tích cực thu thập điểm bằng cách giúp đỡ trong <#975409529204375653> nhé!`,

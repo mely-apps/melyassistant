@@ -6,6 +6,9 @@ const Duration = require("duration");
 module.exports = {
 	name: "voiceStateUpdate",
 	async execute(oldState, newState, client) {
+		const moduleTable = client.db.table("module");
+		if (!(await moduleTable.get("dmStudyVoice"))) return;
+
 		// ids are not the same
 		if (oldState.id !== newState.id) return;
 

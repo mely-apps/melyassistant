@@ -9,7 +9,7 @@ module.exports = {
 	async execute(message, args) {
 		const { client, guild, member } = message;
 
-		const thanks = client.db.table("thanks")
+		const thanks = client.db.table("waitingThanks")
 		await thanks.deleteAll()
 	},
 };

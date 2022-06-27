@@ -3,6 +3,9 @@ const { test_guild_id } = require("../config.json");
 module.exports = {
 	name: "threadUpdate",
 	async execute(oldThread, newThread, client) {
+		const moduleTable = client.db.table("module");
+		if (!(await moduleTable.get("thankPoint"))) return;
+
 		if (
 			oldThread.guildId !== test_guild_id ||
 			newThread.guildId !== test_guild_id
@@ -47,16 +50,21 @@ module.exports = {
 				? (await oldThread.fetchOwner()).user
 				: (await oldThread.messages.fetch()).last().mentions.users.first();
 
-		const options = (await newThread.members.fetch())
+		const threadMsgs = await newThread.messages.fetch();
+
+		const options = threadMsgs
+			.map((m) => m.member)
+			.filter((m) => !m.user.bot && m.user.id !== asker.id)
+			.filter((v, i, s) => s.indexOf(v) == i)
 			.map((tm) => {
-				if (tm.id === asker.id || tm.user.bot) return;
 				return {
-					label: `${client.displayName(tm.guildMember)}`,
+					label: `${client.displayName(tm)} (${
+						threadMsgs.filter((m) => m.author.id === tm.id).size
+					} tin nhắn)`,
 					description: `${tm.user.tag}`,
 					value: `${tm.id}`,
 				};
-			})
-			.filter((v) => typeof v !== "undefined");
+			});
 
 		if (!options.length) return;
 
@@ -84,17 +92,15 @@ module.exports = {
 			),
 		];
 
-		asker
-			.send({
+		try {
+			const msg = await asker.send({
 				embeds: [embed],
 				components: row(false),
-			})
-			.catch(console.log);
-
-		// client.emit(
-		// 	"log",
-		// 	"archiveThreadThanks",
-		// 	`At: ${newThread}\nAuthor: ${asker.id}`
-		// );
+			});
+			const watingThankDB = client.db.table("waitingThanks");
+			await watingThankDB.set(`${msg.channelId}`, msg.id);
+		} catch (error) {
+			console.log(error);
+		}
 	},
 };

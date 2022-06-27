@@ -5,7 +5,8 @@ module.exports = {
 
 	async execute(message) {
 		const { client, guild, channel, content, author } = message;
-
+		const moduleTable = client.db.table("module");
+		if (!(await moduleTable.get("emore"))) return;
 		if (author.bot) return;
 
 		if (!guild || guild == null) return;
@@ -13,7 +14,7 @@ module.exports = {
 		if (guild.id != test_guild_id) return;
 
 		const db = client.db.table("settings");
-		
+
 		if (!(await db.has("emore"))) return;
 
 		if (!(await db.get("emore")).includes(channel.id)) return;

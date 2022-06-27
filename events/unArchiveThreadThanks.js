@@ -3,6 +3,9 @@ const { test_guild_id } = require("../config.json");
 module.exports = {
 	name: "threadUpdate",
 	async execute(oldThread, newThread, client) {
+		const moduleTable = client.db.table("module");
+		if (!(await moduleTable.get("thankPoint"))) return;
+		
 		if (
 			oldThread.guildId !== test_guild_id ||
 			newThread.guildId !== test_guild_id
@@ -29,6 +32,22 @@ module.exports = {
 		)
 			return;
 
+		const asker =
+			oldThread.ownerId !== client.user.id
+				? (await oldThread.fetchOwner()).user
+				: (await oldThread.messages.fetch()).last().mentions.users.first();
+
+		const watingThankDB = client.db.table("waitingThanks");
+		if (await watingThankDB.has(asker.dmChannel.id)) {
+			const waitingMsg = await (
+				await client.channels.fetch(asker.dmChannel.id)
+			).messages.fetch(await watingThankDB.get(asker.dmChannel.id));
+			if (waitingMsg.deletable) {
+				waitingMsg.delete();
+				await watingThankDB.delete(asker.dmChannel.id)
+			}
+		}
+
 		const db = client.db.table("thanks");
 
 		const thankArray = await db.all();
@@ -44,11 +63,6 @@ module.exports = {
 		)
 			return;
 
-		const asker =
-			oldThread.ownerId !== client.user.id
-				? (await oldThread.fetchOwner()).user
-				: (await oldThread.messages.fetch()).last().mentions.users.first();
-
 		const exec = (o) => o.threadId === newThread.id && o.fromId === asker.id;
 
 		const replierId = thankArray.find((e) => e.value.find(exec)).id;
@@ -58,9 +72,12 @@ module.exports = {
 			: `<@${replierId}>`;
 
 		await db.pull(replierId, exec);
-		client.actionlog("-thankPoint", `From ${asker.id} to ${replierId}\nReason: unarchive`);
+		client.actionlog(
+			"-thankPoint",
+			`From ${asker.id} to ${replierId}\nReason: unarchive`
+		);
 
-		await asker
+		asker
 			.send({
 				content: `Câu hỏi ${newThread} của bạn vừa được mở lại và đồng thời ${replier} cũng bị trừ điểm!`,
 			})

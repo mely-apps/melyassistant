@@ -5,6 +5,9 @@ module.exports = {
 	// skip: true,
 	async execute(message) {
 		const { client, guild, channel, content, author } = message;
+		const moduleTable = client.db.table("module");
+		
+		if (!(await moduleTable.get("introThread"))) return;
 
 		if (!guild || guild == null) return;
 

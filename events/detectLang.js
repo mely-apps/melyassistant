@@ -8,6 +8,9 @@ module.exports = {
 	async execute(message) {
 		const { client, guild, channel, content, author, member } = message;
 
+		const moduleTable = client.db.table("module");
+		if (!(await moduleTable.get("detectLang"))) return;
+
 		if (author.bot) return;
 
 		// if (author.id !== "445102575314927617") return;

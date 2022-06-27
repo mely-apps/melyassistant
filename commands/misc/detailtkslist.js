@@ -12,6 +12,9 @@ module.exports = {
 	async execute(message, args) {
 		const { client, guild, author } = message;
 
+		const moduleTable = client.db.table("module");
+		if (!(await moduleTable.get("thankPoint"))) return;
+
 		const thankTable = client.db.table("thanks");
 		let thanksArray = !args.length
 			? await thankTable.all()

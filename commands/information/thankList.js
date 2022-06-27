@@ -17,10 +17,13 @@ module.exports = {
 
 	async execute(message, args) {
 		const { client, guild, author } = message;
+		const moduleTable = client.db.table("module");
+		if (!(await moduleTable.get("thankPoint"))) return;
 
 		const thankTable = client.db.table("thanks");
 		const thanksArray = (await thankTable.all())
 			.map((key) => [key.id, key.value.length])
+			.filter((key) => key[1] > 0)
 			.sort((a, b) => b[1] - a[1]);
 
 		const thankContentArray = thanksArray.map((e) => {

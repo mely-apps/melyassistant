@@ -4,7 +4,8 @@ module.exports = {
 	name: "messageCreate",
 	async execute(message) {
 		const { client, guild, channel, content, author } = message;
-
+		const moduleTable = client.db.table("module");
+		if (!(await moduleTable.get("thankPoint"))) return;
 		if (
 			!guild ||
 			guild == null ||

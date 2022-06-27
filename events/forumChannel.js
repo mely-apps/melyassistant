@@ -5,7 +5,8 @@ module.exports = {
 	name: "messageCreate",
 	async execute(message) {
 		const { client, guild, channel, content, author } = message;
-
+		const moduleTable = client.db.table("module");
+		if (!(await moduleTable.get("forum"))) return;
 		if (!guild || guild == null) return;
 
 		if (guild.id != test_guild_id) return;

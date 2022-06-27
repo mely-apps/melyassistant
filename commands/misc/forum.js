@@ -11,6 +11,9 @@ module.exports = {
 	async execute(message, args) {
 		const { client, channel, guild } = message;
 
+		const moduleTable = client.db.table("module");
+		if (!(await moduleTable.get("forum"))) return;
+
 		const option = args.shift();
 		const db = client.db.table("settings");
 

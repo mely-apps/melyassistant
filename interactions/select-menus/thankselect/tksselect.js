@@ -2,8 +2,10 @@ module.exports = {
 	id: "tksselect",
 
 	async execute(interaction) {
-		await interaction.deferUpdate();
 		const { client, values, message } = interaction;
+		const moduleTable = client.db.table("module");
+		if (!(await moduleTable.get("thankPoint"))) return;
+		await interaction.deferUpdate();
 		const db = client.db.table("thanks");
 		const replierId = values.shift();
 		const embed = message.embeds.shift();
