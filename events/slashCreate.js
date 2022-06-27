@@ -19,6 +19,19 @@ module.exports = {
 
 		if (!command) return;
 
+		if (command.modules && command.modules.length > 0) {
+			const moduleTable = client.db.table("module");
+			const enabledModules = (await moduleTable.all())
+				.filter((e) => e.value === true)
+				.map((e) => e.id);
+
+			if (!command.modules.some((e) => enabledModules.includes(e)))
+				return interaction.reply({
+					content: "You cant use it by now!",
+					ephemeral: true,
+				});
+		}
+
 		// A try to executes the interaction.
 
 		try {

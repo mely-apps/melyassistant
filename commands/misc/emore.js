@@ -16,7 +16,7 @@ module.exports = {
 
 		const option = args.shift();
 		const db = client.db.table("settings");
-		const channelId = args.shift() || channel.id;
+		const channelId = client.getChannelId(args) || args.shift() || channel.id;
 
 		switch (option) {
 			case "get":

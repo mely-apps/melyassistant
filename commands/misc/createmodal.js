@@ -11,7 +11,7 @@ module.exports = {
 	async execute(message, args) {
 		const { client, guild, member } = message;
 
-		const channelId = args.shift()
+		const channelId = client.getChannelId(args) || args.shift() || channel.id;
 
 		const channel =
 			(await guild.channels.fetch(channelId)) ||

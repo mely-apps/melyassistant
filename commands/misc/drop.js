@@ -56,7 +56,7 @@ module.exports = {
 			),
 		];
 
-		const channelId = args[0];
+		const channelId = client.getChannelId(args) || args.shift() || channel.id;
 
 		const channel =
 			(await guild.channels.fetch(channelId)) ||

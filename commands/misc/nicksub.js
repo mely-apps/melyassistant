@@ -1,28 +1,31 @@
 const Discord = require("discord.js");
 
 module.exports = {
-	name: "actionlog",
-	description: "set, get, delele actionlog channel",
+	name: "nicksub",
+	description: "set, get, delele nickname submissions channel",
 	args: true,
 	ownerOnly: true,
-	options: ["delete", "set", "get", "test"],
-	usage: "<channel ID>",
+	options: ["delete", "set", "get"],
+	usage: "<channel>",
 
 	async execute(message, args) {
 		const { client, channel, guild } = message;
+
+		const moduleTable = client.db.table("module");
+		if (!(await moduleTable.get("nickname"))) return;
 
 		const option = args.shift();
 		const db = client.db.table("settings");
 
 		switch (option) {
 			case "get":
-				if (!(await db.has("actionWebhookURL")))
+				if (!(await db.has("nickname")))
 					return message.reply({
-						content: `Actionlog channel is not exist`,
+						content: `Nickname submissions channel is not exist`,
 					});
 
 				message.reply({
-					content: `webhookURL: ${await db.get("actionWebhookURL")}`,
+					content: `NickSub: <#${await db.get("nickname")}>`,
 				});
 				break;
 			case "set":
@@ -49,26 +52,19 @@ module.exports = {
 					return message.reply({
 						content: `Get a normal text channel!`,
 					});
-				const webhooks = (await channelSet.fetchWebhooks()).filter(
-					(w) => w.owner.id == client.user.id
-				);
 
-				const webhook = webhooks.size
-					? webhooks.first()
-					: await channelSet.createWebhook(client.user.username);
-
-				await db.set("actionWebhookURL", webhook.url);
+				await db.set("nickname", channelSet.id);
 
 				return message.reply({
-					content: `Action log is set to ${channelSet}`,
+					content: `NickSub channel is set to ${channelSet}`,
 				});
 			case "delete":
-				if (!(await db.has("actionWebhookURL")))
+				if (!(await db.has("nickname")))
 					return message.reply({
-						content: `Actionlog channel is not exist`,
+						content: `Nickname submissions channel is not exist`,
 					});
 				try {
-					const status = await db.delete("actionWebhookURL");
+					const status = await db.delete("nickname");
 
 					await message.reply({
 						content: `Success: ${status}`,
@@ -79,24 +75,6 @@ module.exports = {
 						content: `\n\`\`\`${error.message}\`\`\``,
 					});
 				}
-				break;
-			case "test":
-				if (!(await db.has("actionWebhookURL")))
-					return message.reply({
-						content: `Actionlog channel is not exist`,
-					});
-
-				const actionWebhookURL = await db.get("actionWebhookURL");
-				const webhookClient = new Discord.WebhookClient({
-					url: actionWebhookURL,
-				});
-				await webhookClient.send({
-					content: !args.length ? "Test" : args.join(" "),
-				});
-				client.actionlog("test")
-				message.reply({
-					content: `Sent test!`,
-				});
 				break;
 		}
 	},

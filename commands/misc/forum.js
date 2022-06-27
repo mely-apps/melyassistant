@@ -31,7 +31,8 @@ module.exports = {
 				});
 				break;
 			case "set":
-				const channelId = args.shift() || channel.id;
+				const channelId =
+					client.getChannelId(args) || args.shift() || channel.id;
 				const isChannelExist = guild.channels.cache.some(
 					(c) => c.id == channelId
 				);
@@ -62,6 +63,11 @@ module.exports = {
 				if (channelSet == null)
 					return message.reply({
 						content: `Channel: <#${channelSet}>`,
+					});
+
+				if (!channelSet.isText() || channelSet.isThread())
+					return message.reply({
+						content: `Get a normal text channel!`,
 					});
 
 				const msg = await channelSet.send({

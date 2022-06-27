@@ -8,7 +8,7 @@ module.exports = {
 		if (guild.id != test_guild_id) return;
 
 		const moduleTable = client.db.table("module");
-		if (await moduleTable.get("greeting")) return;
-		require("../messages/welcomeMessageMeLy").execute(member);
+		if (await moduleTable.get("greeting"))
+			return require("../messages/welcomeMessageMeLy").execute(member);
 	},
 };
