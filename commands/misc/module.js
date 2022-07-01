@@ -14,7 +14,7 @@ module.exports = {
 		"forum",
 		"emore",
 		"detectLang",
-		"introThread",
+		"threadReply",
         "nickname"
 	],
 	usage: "<on|off>",
