@@ -10,19 +10,16 @@ module.exports = {
 
 		const Embed = await require("../../constants/embeds/guide")(guild);
 
-		try {
-			await message
-				.reply({
-					embeds: [Embed],
-				})
-				.then(async (msg) => {
-					setTimeout(async () => {
-						if (msg && msg.deletable) await msg.delete();
-						if (message && message.deletable) await message.delete();
-					}, 60000);
-				});
-		} catch (error) {
-			console.log(error.message);
-		}
+		await message
+			.reply({
+				embeds: [Embed],
+			})
+			.then(async (msg) => {
+				setTimeout(async () => {
+					if (msg && msg.deletable) await msg.delete();
+					if (message && message.deletable) await message.delete();
+				}, 60000);
+			})
+			.catch(console.error);
 	},
 };

@@ -9,6 +9,6 @@ module.exports = {
 
 		const moduleTable = client.db.table("module");
 		if (await moduleTable.get("greeting"))
-			return require("../messages/welcomeMessageMeLy").execute(member);
+			require("../messages/welcomeMessageMeLy").execute(member);
 	},
 };

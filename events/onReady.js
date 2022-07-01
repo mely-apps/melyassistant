@@ -23,7 +23,7 @@ module.exports = {
 			"forum",
 			"emore",
 			"detectLang",
-			"introThread",
+			"threadReply",
 			"nickname",
 		];
 

@@ -6,16 +6,21 @@ module.exports = {
 	async execute(message) {
 		const { client, guild, channel, content, author } = message;
 		const moduleTable = client.db.table("module");
-		
-		if (!(await moduleTable.get("introThread"))) return;
+		if (!(await moduleTable.get("threadReply"))) return;
 
 		if (!guild || guild == null) return;
 
 		if (guild.id != test_guild_id) return;
 
-		if (!channel.name.toLowerCase().includes("giới-thiệu-bản-thân")) return;
+		const db = client.db.table("settings");
 
-		if (content.length < 100) return;
+		if (!(await db.has("threadReply"))) return;
+
+		if (!(await db.get("threadReply")).includes(channel.id)) return;
+
+		// if (!channel.name.toLowerCase().includes("giới-thiệu-bản-thân")) return;
+
+		if (content.length < 50) return;
 
 		return message
 			.startThread({
