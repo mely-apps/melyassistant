@@ -1,7 +1,7 @@
 const Discord = require("discord.js");
 
 module.exports = {
-	name: "threadReply",
+	name: "threadreply",
 	description: "set, get, delele auto thread reply channel",
 	args: true,
 	ownerOnly: true,
