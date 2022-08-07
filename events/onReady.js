@@ -1,18 +1,35 @@
+const numeral = require("numeral");
+
 module.exports = {
 	name: "ready",
 	once: true,
 	execute(client) {
+		const AnHour = 3_600_000;
+
 		console.log(`Ready! Logged in as ${client.user.tag}`);
+		let uCount = () => numeral(client.users.cache.size).format("0.0a");
 		client.user.setPresence({
 			status: "online",
 			afk: false,
 			activities: [
 				{
-					name: `Code MeLy`,
+					name: `Code MeLy | ${uCount()} users`,
 					type: 3,
 				},
 			],
 		});
+		setInterval(async () => {
+			client.user.setPresence({
+				status: "online",
+				afk: false,
+				activities: [
+					{
+						name: `Code MeLy | ${uCount()} users`,
+						type: 3,
+					},
+				],
+			});
+		}, AnHour);
 
 		// setup module db
 		const moduleTable = client.db.table("module");
