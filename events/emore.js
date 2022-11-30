@@ -1,7 +1,8 @@
+const { Events } = require("discord.js");
 const { prefix, owner, test_guild_id } = require("../config.json");
 
 module.exports = {
-	name: "messageCreate",
+	name: Events.MessageCreate,
 
 	async execute(message) {
 		const { client, guild, channel, content, author } = message;

@@ -1,5 +1,7 @@
+const { Events } = require("discord.js");
+
 module.exports = {
-	name: "interactionCreate",
+	name: Events.InteractionCreate,
 
 	async execute(interaction) {
 		// Deconstructed client from interaction object.

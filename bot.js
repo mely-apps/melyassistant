@@ -1,29 +1,33 @@
 // Declare constants which will be used throughout the bot.
 
 const fs = require("fs");
-const { Client, Collection, Intents } = require("discord.js");
+const {
+	Client,
+	Collection,
+	GatewayIntentBits,
+} = require("discord.js");
 const { REST } = require("@discordjs/rest");
 const { Routes } = require("discord-api-types/v9");
 const { token, client_id, test_guild_id } = require("./config.json");
-const { QuickDB } = require('quick.db');
+const { QuickDB } = require("quick.db");
 
 const intents = [
-	"GUILDS",
-	"GUILD_MEMBERS",
-	"GUILD_BANS",
-	"GUILD_EMOJIS_AND_STICKERS",
-	"GUILD_INTEGRATIONS",
-	"GUILD_WEBHOOKS",
-	"GUILD_INVITES",
-	"GUILD_VOICE_STATES",
-	"GUILD_PRESENCES",
-	"GUILD_MESSAGES",
-	"GUILD_MESSAGE_REACTIONS",
-	"GUILD_MESSAGE_TYPING",
-	"DIRECT_MESSAGES",
-	"DIRECT_MESSAGE_REACTIONS",
-	"DIRECT_MESSAGE_TYPING",
-	"GUILD_SCHEDULED_EVENTS"
+	GatewayIntentBits.Guilds,
+	GatewayIntentBits.GuildMembers,
+	GatewayIntentBits.GuildBans,
+	GatewayIntentBits.GuildEmojisAndStickers,
+	GatewayIntentBits.GuildIntegrations,
+	GatewayIntentBits.GuildWebhooks,
+	GatewayIntentBits.GuildInvites,
+	GatewayIntentBits.GuildVoiceStates,
+	GatewayIntentBits.GuildPresences,
+	GatewayIntentBits.GuildMessages,
+	GatewayIntentBits.GuildMessageReactions,
+	GatewayIntentBits.GuildMessageTyping,
+	GatewayIntentBits.DirectMessages,
+	GatewayIntentBits.DirectMessageReactions,
+	GatewayIntentBits.DirectMessageTyping,
+	GatewayIntentBits.GuildScheduledEvents,
 ];
 
 const client = new Client({
@@ -72,8 +76,8 @@ client.contextCommands = new Collection();
 client.modalCommands = new Collection();
 client.cooldowns = new Collection();
 client.triggers = new Collection();
-client.db = new QuickDB()
-require("./modules/util/client")(client)
+client.db = new QuickDB();
+require("./modules/util/client")(client);
 
 /**********************************************************************/
 // Registration of Message-Based Commands

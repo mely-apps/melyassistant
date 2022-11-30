@@ -1,7 +1,7 @@
 const Discord = require("discord.js");
 const { test_guild_id } = require("../config.json");
 module.exports = {
-	name: "threadUpdate",
+	name: Discord.Events.ThreadUpdate,
 	async execute(oldThread, newThread, client) {
 		const moduleTable = client.db.table("module");
 		if (!(await moduleTable.get("thankPoint"))) return;

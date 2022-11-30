@@ -6,7 +6,7 @@
 
 // Declares constants (destructured) to be used in this file.
 
-const { Collection, DMChannel } = require("discord.js");
+const { Collection, DMChannel, Events } = require("discord.js");
 const { prefix, owner } = require("../config.json");
 
 // Prefix regex, we will use to match in mention prefix.
@@ -16,7 +16,7 @@ const escapeRegex = (string) => {
 };
 
 module.exports = {
-	name: "messageCreate",
+	name: Events.MessageCreate,
 
 	async execute(message) {
 		const { client, guild, channel, content, author } = message;

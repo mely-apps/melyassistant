@@ -1,10 +1,10 @@
 const { prefix, owner, test_guild_id } = require("../config.json");
 const studyTimestamp = new Map();
-const { MessageEmbed } = require("discord.js");
+const { MessageEmbed, Events } = require("discord.js");
 const Duration = require("duration");
 
 module.exports = {
-	name: "voiceStateUpdate",
+	name: Events.VoiceStateUpdate,
 	async execute(oldState, newState, client) {
 		const moduleTable = client.db.table("module");
 		if (!(await moduleTable.get("dmStudyVoice"))) return;

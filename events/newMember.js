@@ -1,7 +1,8 @@
+const { Events } = require("discord.js");
 const { test_guild_id } = require("../config.json");
 
 module.exports = {
-	name: "guildMemberAdd",
+	name: Events.GuildMemberAdd,
 
 	async execute(member, client) {
 		const { guild } = member;

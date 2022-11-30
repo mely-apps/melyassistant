@@ -1,7 +1,8 @@
+const { Events } = require("discord.js");
 const numeral = require("numeral");
 
 module.exports = {
-	name: "ready",
+	name: Events.ClientReady,
 	once: true,
 	execute(client) {
 		const AnHour = 3_600_000;

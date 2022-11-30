@@ -1,7 +1,7 @@
 const Discord = require("discord.js");
 const { prefix, owner, test_guild_id } = require("../config.json");
 module.exports = {
-	name: "messageCreate",
+	name: Discord.Events.MessageCreate,
 	async execute(message) {
 		const { client, guild, channel, content, author } = message;
 		const moduleTable = client.db.table("module");

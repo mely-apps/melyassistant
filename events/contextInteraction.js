@@ -4,8 +4,10 @@
  * @since 3.0.0
  */
 
+const { Events } = require("discord.js");
+
 module.exports = {
-	name: "interactionCreate",
+	name: Events.InteractionCreate,
 
 	/**
 	 * @description Executes when an interaction is created and handle it.
