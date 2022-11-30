@@ -9,7 +9,7 @@
 // Deconstructed the constants we need in this file.
 
 const { MessageEmbed, Collection } = require("discord.js");
-const { SlashCommandBuilder } = require("@discordjs/builders");
+const { SlashCommandBuilder } = require("discord.js");
 
 module.exports = {
 	// The data needed to register slash commands to Discord.
