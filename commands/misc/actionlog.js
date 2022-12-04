@@ -1,4 +1,6 @@
+const { ChannelType } = require("discord.js");
 const Discord = require("discord.js");
+const { isNormalTextChannel } = require("../../modules/util/validate");
 
 module.exports = {
 	name: "actionlog",
@@ -45,7 +47,7 @@ module.exports = {
 						content: `Cannot fetch that channel`,
 					});
 
-				if (!channelSet.isText() || channelSet.isThread())
+				if (!isNormalTextChannel(channelSet))
 					return message.reply({
 						content: `Get a normal text channel!`,
 					});
@@ -93,7 +95,7 @@ module.exports = {
 				await webhookClient.send({
 					content: !args.length ? "Test" : args.join(" "),
 				});
-				client.actionlog("test")
+				client.actionlog("test");
 				message.reply({
 					content: `Sent test!`,
 				});

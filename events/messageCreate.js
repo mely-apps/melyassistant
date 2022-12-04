@@ -6,7 +6,7 @@
 
 // Declares constants (destructured) to be used in this file.
 
-const { Collection, DMChannel, Events } = require("discord.js");
+const { Collection, DMChannel, Events, ChannelType } = require("discord.js");
 const { prefix, owner } = require("../config.json");
 
 // Prefix regex, we will use to match in mention prefix.
@@ -23,13 +23,7 @@ module.exports = {
 
 		if (message.author.bot) return;
 
-		if (
-			!guild ||
-			guild == null ||
-			channel.type == 1 ||
-			channel.type.toLowerCase() == "dm" ||
-			channel instanceof DMChannel
-		) {
+		if (!guild || guild == null || channel.type === ChannelType.DM) {
 			console.log(message);
 			return require("../messages/dmMessage").execute(message);
 		}

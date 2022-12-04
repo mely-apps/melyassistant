@@ -1,5 +1,5 @@
 const Discord = require("discord.js");
-const { MessageButtonPages } = require("discord-button-page");
+const { ButtonBuilderPages } = require("discord-button-page");
 
 module.exports = {
 	name: "listfname",
@@ -28,7 +28,7 @@ module.exports = {
 		}
 
 		const pages = tempArray.map((c) =>
-			new Discord.MessageEmbed().setDescription(`\`\`\`${c.join("\n")}\`\`\``)
+			new Discord.EmbedBuilder().setDescription(`\`\`\`${c.join("\n")}\`\`\``)
 		);
 
 		if (pages.length < 2)
@@ -36,7 +36,7 @@ module.exports = {
 				content: `\`\`\`${unsuitableMembers.join("\n")}\`\`\``,
 			});
 
-		const embedPages = new MessageButtonPages()
+		const embedPages = new ButtonBuilderPages()
 			.setDuration(300000)
 			.setEmbeds(pages)
 			.setReply(true);

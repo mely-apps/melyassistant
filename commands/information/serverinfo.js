@@ -1,3 +1,4 @@
+const { ChannelType } = require("discord.js");
 const Discord = require("discord.js");
 
 module.exports = {
@@ -34,8 +35,9 @@ module.exports = {
 
 		// return;
 		const channels = {
-			voice: guildChannels.filter((c) => c.isVoice()).size,
-			text: guildChannels.filter((c) => c.isText()).size,
+			voice: guildChannels.filter((c) => c.type === ChannelType.GuildVoice)
+				.size,
+			text: guildChannels.filter((c) => c.type === ChannelType.GuildText).size,
 		};
 
 		const members = {
@@ -47,35 +49,55 @@ module.exports = {
 			capitalizeFirstLetter(f.toLowerCase().replace(/_+/g, " "))
 		);
 
-		const Embed = new Discord.MessageEmbed()
+		const Embed = new Discord.EmbedBuilder()
 			.setTitle(guild.name + "'s Informations")
-			.setColor("RANDOM")
+			.setColor("Random")
 			// .setDescription(timeConverter(guild.joinedTimestamp))
 			.setThumbnail(guild.iconURL({ size: 1024, dynamic: true }))
-			.addField("Owner", `\`\`\`${owner.user.tag}\`\`\``, true)
-			// .addField("Prefix", `\`\`\`${guildSettings.prefix}\`\`\``, true)
-			.addField("Roles", "```" + guildRoles.size + " roles```", true)
-			.addField(
-				channels.voice + channels.text + " Channels",
-				`\`\`\`Texts: ${channels.text}\nVoices: ${channels.voice}\`\`\``,
-				true
-			)
-			.addField(
-				guild.memberCount + " Members",
-				`\`\`\`Users: ${members.user}\nBots: ${members.bot}\`\`\``,
-				true
-			)
-			.addField(
-				"Additional",
-				`\`\`\`Created at: ${timeConverter(
-					guild.joinedTimestamp
-				)}\nVerification Level: ${guild.verificationLevel}\nBoost Level: ${
-					guild.premiumTier
-				}\nBoost Count: ${guild.premiumSubscriptionCount}\nPreferred Locale: ${
-					guild.preferredLocale
-				}\`\`\``
-			)
-			.addField("Features", "```" + features.join(", ") + "```")
+			.addFields([
+				{
+					name: `Owner`,
+					value: `\`\`\`${owner.user.tag}\`\`\``,
+					inline: true,
+				},
+				{
+					name: `Roles`,
+					value: `\`\`\`${guildRoles.size} roles\`\`\``,
+					inline: true,
+				},
+				// {
+				// 	name: `Prefix`,
+				// 	value: `\`\`\`${guildSettings.prefix}\`\`\``,
+				// 	inline: true,
+				// },
+				{
+					name: channels.voice + channels.text + " Channels",
+					value: `\`\`\`Texts: ${channels.text}\nVoices: ${channels.voice}\`\`\``,
+					inline: true,
+				},
+				{
+					name: guild.memberCount + " Members",
+					value: `\`\`\`Users: ${members.user}\nBots: ${members.bot}\`\`\``,
+					inline: true,
+				},
+				{
+					name: `Additional`,
+					value: `\`\`\`Created at: ${timeConverter(
+						guild.joinedTimestamp
+					)}\nVerification Level: ${guild.verificationLevel}\nBoost Level: ${
+						guild.premiumTier
+					}\nBoost Count: ${
+						guild.premiumSubscriptionCount
+					}\nPreferred Locale: ${guild.preferredLocale}\`\`\``,
+					inline: false,
+				},
+				{
+					name: `Features`,
+					value: "```" + features.join(", ") + "```",
+					inline: false,
+				},
+			])
+			.addField("", ``)
 			.setFooter({ text: `ID: ${guild.id}` })
 			.setTimestamp(guild.joinedTimestamp);
 

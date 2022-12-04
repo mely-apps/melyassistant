@@ -14,8 +14,8 @@ module.exports = {
 
 		const question = interaction.fields.getTextInputValue("embedquestion");
 
-		const Embed = new Discord.MessageEmbed()
-			.setColor("RANDOM")
+		const Embed = new Discord.EmbedBuilder()
+			.setColor("Random")
             .setTitle(interaction.message.embeds[0].description)
 			.setAuthor({
 				name: member.user.tag,

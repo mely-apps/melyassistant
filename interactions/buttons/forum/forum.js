@@ -16,11 +16,11 @@ module.exports = {
 
 		// console.log(message.embeds[0].description);
 
-		const modal = new Discord.Modal()
+		const modal = new Discord.ModalBuilder()
 			.setCustomId("forummodal")
 			.setTitle("HỎI ĐÁP");
 
-		const topicInput = new Discord.TextInputComponent()
+		const topicInput = new Discord.TextInputBuilder()
 			.setCustomId("topic")
 			.setRequired(true)
 			.setMinLength(10)
@@ -29,16 +29,16 @@ module.exports = {
 			.setLabel("Chủ đề cần hỏi")
 			.setStyle("SHORT");
 
-		const questionInput = new Discord.TextInputComponent()
+		const questionInput = new Discord.TextInputBuilder()
 			.setCustomId("question")
 			.setRequired(false)
 			.setPlaceholder("Điền câu hỏi...")
 			.setLabel("Câu hỏi")
 			.setStyle("PARAGRAPH");
 
-		const topicRow = new Discord.MessageActionRow().addComponents(topicInput);
+		const topicRow = new Discord.ActionRowBuilder().addComponents(topicInput);
 
-		const questionRow = new Discord.MessageActionRow().addComponents(
+		const questionRow = new Discord.ActionRowBuilder().addComponents(
 			questionInput
 		);
 

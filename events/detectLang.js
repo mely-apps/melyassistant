@@ -1,6 +1,6 @@
 const { test_guild_id } = require("../config.json");
 const detectLang = require("lang-detector");
-const { MessageActionRow, MessageButton, Events } = require("discord.js");
+const { ActionRowBuilder, ButtonBuilder, Events } = require("discord.js");
 
 module.exports = {
 	name: Events.MessageCreate,
@@ -70,11 +70,11 @@ module.exports = {
 		}
 
 		// const row = [
-		// 	new MessageActionRow().addComponents(
-		// 		new MessageButton()
+		// 	new ActionRowBuilder().addComponents(
+		// 		new ButtonBuilder()
 		// 			.setCustomId("save")
 		// 			.setLabel("Lưu")
-		// 			.setStyle("SECONDARY")
+		// 			.setStyle(ButtonStyle.Secondary)
 		// 			.setEmoji("💾")
 		// 	),
 		// ];

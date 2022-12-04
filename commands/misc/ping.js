@@ -31,23 +31,29 @@ module.exports = {
 			seconds > 0 ? `${seconds} second${seconds > 1 ? "s" : ""}` : ""
 		}`;
 
-		const Embed = new Discord.MessageEmbed()
+		const Embed = new Discord.EmbedBuilder()
 			// .setTitle("🏓 Pong!")
-			.setColor("RANDOM")
-			.addField("Online", "```" + uptime + "```")
-			.addField(
-				"API Latency",
-				"```" + Math.round(client.ws.ping) + "ms" + "```",
-				true
-			)
-			.addField(
-				"Client Latency",
-				"```" +
-					Math.round(Date.now() - message.createdTimestamp) +
-					"ms" +
-					"```",
-				true
-			);
+			.setColor("Random")
+			.addFields([
+				{
+					name: "Online",
+					value: "```" + uptime + "```",
+				},
+				{
+					name: "API Latency",
+					value: "```" + Math.round(client.ws.ping) + "ms" + "```",
+					inline: true,
+				},
+				{
+					name: "Client Latency",
+					value:
+						"```" +
+						Math.round(Date.now() - message.createdTimestamp) +
+						"ms" +
+						"```",
+					inline: true,
+				},
+			]);
 		return message.reply({
 			embeds: [Embed],
 		});

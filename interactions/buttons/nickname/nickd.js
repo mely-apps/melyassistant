@@ -31,18 +31,18 @@ module.exports = {
 		const reqNewNick = reqEmbed.fields.find((f) => f.name === "New")["value"];
 		const reqOldNick = reqEmbed.fields.find((f) => f.name === "Old")["value"];
 
-		const reqDecReasonInput = new Discord.TextInputComponent()
+		const reqDecReasonInput = new Discord.TextInputBuilder()
 			.setCustomId("reason")
 			// The label is the prompt the user sees for this input
 			.setLabel("Lý do từ chối")
 			// Short means only a single line of text
 			.setStyle("PARAGRAPH");
 
-		const reqDecReasonRow = new Discord.MessageActionRow().addComponents(
+		const reqDecReasonRow = new Discord.ActionRowBuilder().addComponents(
 			reqDecReasonInput
 		);
 
-		const modal = new Discord.Modal()
+		const modal = new Discord.ModalBuilder()
 			.setCustomId("nick-r")
 			.setTitle("Nickname Decline Reason")
 			.addComponents(reqDecReasonRow);
@@ -66,13 +66,27 @@ module.exports = {
 						}`,
 					})
 					.then(() => {
-						const decline_embed = new Discord.MessageEmbed()
+						const decline_embed = new Discord.EmbedBuilder()
 							.setTitle(`Nickname Request Declined (${reqId})`)
-							.setColor("RED")
-							.addField(`Changed for`, reqUser.tag)
-							.addField(`From`, reqOldNick)
-							.addField(`To`, reqNewNick)
-							.addField("Reason", reason.length == 0 ? "None" : reason)
+							.setColor("Red")
+							.addFields([
+								{
+									name: `Changed for`,
+									value: reqUser.tag,
+								},
+								{
+									name: `From`,
+									value: reqOldNick,
+								},
+								{
+									name: `To`,
+									value: reqNewNick,
+								},
+								{
+									name: "Reason",
+									value: reason.length == 0 ? "None" : reason,
+								},
+							])
 							.setFooter({
 								text: `Declined by ${interaction.user.tag}`,
 							});

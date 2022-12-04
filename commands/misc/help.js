@@ -7,8 +7,8 @@
 // Deconstructing prefix from config file to use in help command
 const { prefix } = require("./../../config.json");
 
-// Deconstructing MessageEmbed to create embeds within this command
-const { MessageEmbed } = require("discord.js");
+// Deconstructing EmbedBuilder to create embeds within this command
+const { EmbedBuilder } = require("discord.js");
 
 module.exports = {
 	name: "help",
@@ -35,30 +35,35 @@ module.exports = {
 			 * @description Help command embed object
 			 */
 
-			let helpEmbed = new MessageEmbed()
+			let helpEmbed = new EmbedBuilder()
 				.setColor(0x4286f4)
 				.setURL(process.env.URL)
 				.setTitle("Help Panel")
 				.setDescription(
 					`\`#\` before command is owner only\n\`*\` after command is arguments required`
 				)
-				.addField(
-					"Commands",
-					"`" +
-						commands
-							.map(
-								(command) =>
-									`${command.ownerOnly ? "#" : ""}${command.name}${
-										command.args ? "*" : ""
-									}`
-							)
-							.join("`, `") +
-						"`"
-				)
-				.addField(
-					"Usage",
-					`\nYou can send \`${prefix}help [command name]\` to get info on a specific command!`
-				);
+				.addFields([
+					{
+						name: `Commands`,
+						value:
+							"`" +
+							commands
+								.map(
+									(command) =>
+										`${command.ownerOnly ? "#" : ""}${command.name}${
+											command.args ? "*" : ""
+										}`
+								)
+								.join("`, `") +
+							"`",
+						inline: false,
+					},
+					{
+						name: `Usage`,
+						value: `\nYou can send \`${prefix}help [command name]\` to get info on a specific command!`,
+						inline: false,
+					},
+				]);
 
 			// Attempts to send embed in DMs.
 
@@ -94,7 +99,7 @@ module.exports = {
 		 * @description Embed of Help command for a specific command.
 		 */
 
-		let commandEmbed = new MessageEmbed()
+		let commandEmbed = new EmbedBuilder()
 			.setColor(0x4286f4)
 			.setTitle("Command Help");
 
@@ -102,15 +107,28 @@ module.exports = {
 			commandEmbed.setDescription(`${command.description}`);
 
 		if (command.aliases)
-			commandEmbed
-				.addField("Aliases", `\`${command.aliases.join(", ")}\``, true)
-				.addField("Cooldown", `${command.cooldown || 3} second(s)`, true);
+			commandEmbed.addFields([
+				{
+					name: "Aliases",
+					value: `\`${command.aliases.join(", ")}\``,
+					inline: true,
+				},
+				{
+					name: "Cooldown",
+					value: `${command.cooldown || 3} second(s)`,
+					inline: true,
+				},
+			]);
 		if (command.usage)
-			commandEmbed.addField(
-				"Usage",
-				`\`${prefix}${command.name} ${!command.options ? "" : `[${command.options.join("|")}] `}${command.usage}\``,
-				true
-			);
+			commandEmbed.addFields([
+				{
+					name: "Usage",
+					value: `\`${prefix}${command.name} ${
+						!command.options ? "" : `[${command.options.join("|")}] `
+					}${command.usage}\``,
+					inline: true,
+				},
+			]);
 
 		// Finally send the embed.
 

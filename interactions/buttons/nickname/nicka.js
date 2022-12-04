@@ -41,12 +41,23 @@ module.exports = {
 				)} đã chấp nhận yêu cầu đổi tên của bạn.`,
 			});
 
-			const accecpt_embed = new Discord.MessageEmbed()
+			const accecpt_embed = new Discord.EmbedBuilder()
 				.setTitle(`Nickname Request Approved (${reqId})`)
-				.setColor("GREEN")
-				.addField(`Changed for`, reqMember.user.tag)
-				.addField(`From`, reqOldNick)
-				.addField(`To`, reqNewNick)
+				.setColor("Green")
+				.addFields([
+					{
+						name: `Changed for`,
+						value: reqMember.user.tag,
+					},
+					{
+						name: `From`,
+						value: reqOldNick,
+					},
+					{
+						name: `To`,
+						value: reqNewNick,
+					},
+				])
 				.setFooter({
 					text: `Approved by ${interaction.user.tag}`,
 				});

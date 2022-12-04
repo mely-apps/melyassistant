@@ -1,3 +1,4 @@
+const { ButtonStyle } = require("discord.js");
 const Discord = require("discord.js");
 const { prefix, owner, test_guild_id } = require("../config.json");
 module.exports = {
@@ -51,25 +52,25 @@ module.exports = {
 
 		const replier = message.mentions.repliedUser;
 
-		const Embed = new Discord.MessageEmbed()
+		const Embed = new Discord.EmbedBuilder()
 			.setTitle(`Đánh giá cho ${replier.tag}`)
-			.setColor("RANDOM")
+			.setColor("Random")
 			.setDescription(`Bạn cảm thấy giải pháp của ${replier} đưa ra thế nào?`);
 
 		const row = (state) => [
-			new Discord.MessageActionRow().addComponents(
-				new Discord.MessageButton()
+			new Discord.ActionRowBuilder().addComponents(
+				new Discord.ButtonBuilder()
 					.setCustomId("tksup")
 					.setEmoji("👍")
 					.setLabel("Thích")
 					.setDisabled(state)
-					.setStyle("SUCCESS"),
-				new Discord.MessageButton()
+					.setStyle(ButtonStyle.Success),
+				new Discord.ButtonBuilder()
 					.setCustomId("tksdown")
 					.setEmoji("👎")
 					.setDisabled(state)
 					.setLabel("Chưa thích")
-					.setStyle("DANGER")
+					.setStyle(ButtonStyle.Danger)
 			),
 		];
 

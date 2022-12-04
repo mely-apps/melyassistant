@@ -27,9 +27,9 @@ module.exports = {
 					reason: `Cau hoi cua ${interaction.user}`,
 				})
 				.then(async (threadChannel) => {
-					const Embed = new Discord.MessageEmbed()
+					const Embed = new Discord.EmbedBuilder()
 						.setTitle(topicArray.join(" "))
-						.setColor("RANDOM")
+						.setColor("Random")
 						.setDescription(
 							questionArray == null ? "" : questionArray.join(" ")
 						)

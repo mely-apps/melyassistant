@@ -1,4 +1,5 @@
 const Discord = require("discord.js");
+const { isNormalTextChannel } = require("../../modules/util/validate");
 
 module.exports = {
 	name: "nicksub",
@@ -48,7 +49,7 @@ module.exports = {
 						content: `Cannot fetch that channel`,
 					});
 
-				if (!channelSet.isText() || channelSet.isThread())
+				if (!isNormalTextChannel(channelSet))
 					return message.reply({
 						content: `Get a normal text channel!`,
 					});

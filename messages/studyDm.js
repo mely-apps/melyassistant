@@ -2,7 +2,7 @@ const Discord = require("discord.js");
 
 module.exports = {
 	async execute(member, join = false) {
-		const Embed = new Discord.MessageEmbed();
+		const Embed = new Discord.EmbedBuilder();
 
 		if (join === false) {
 		} else if (join === true) {

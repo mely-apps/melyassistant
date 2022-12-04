@@ -7,16 +7,16 @@ module.exports = {
 
 		// console.log(message.embeds[0].description);
 
-		const modal = new Discord.Modal()
+		const modal = new Discord.ModalBuilder()
 			.setCustomId("generalmodal")
 			.setTitle("MELY FORM");
 
-		const questionInput = new Discord.TextInputComponent()
+		const questionInput = new Discord.TextInputBuilder()
 			.setCustomId("embedquestion")
 			.setLabel(message.embeds[0].description)
 			.setStyle("PARAGRAPH");
 
-		const questionRow = new Discord.MessageActionRow().addComponents(
+		const questionRow = new Discord.ActionRowBuilder().addComponents(
 			questionInput
 		);
 

@@ -1,5 +1,5 @@
 const Discord = require("discord.js");
-const { SlashCommandBuilder } = require("discord.js");
+const { SlashCommandBuilder, ButtonStyle } = require("discord.js");
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -32,29 +32,40 @@ module.exports = {
 
 		const nickSubC = await guild.channels.fetch(nickSubId);
 
-		const Embed = new Discord.MessageEmbed()
+		const Embed = new Discord.EmbedBuilder()
 			.setAuthor({
 				name: member.user.tag,
 				iconURL: member.displayAvatarURL(),
 			})
 			.setTitle("Nickname Request")
-			.setColor("RANDOM")
-			.addField("ID", interaction.user.id)
-			.addField("Old", client.displayName(member))
-			.addField("New", interaction.options.getString("new"));
+			.setColor("Random")
+			.addFields([
+				{
+					name: "ID",
+					value: interaction.user.id,
+				},
+				{
+					name: "Old",
+					value: client.displayName(member),
+				},
+				{
+					name: "New",
+					value: interaction.options.getString("new"),
+				},
+			]);
 
 		const components = (state) => [
-			new Discord.MessageActionRow().addComponents(
-				new Discord.MessageButton()
+			new Discord.ActionRowBuilder().addComponents(
+				new Discord.ButtonBuilder()
 					.setCustomId("nick-a")
 					.setDisabled(state)
 					.setLabel("Approve")
-					.setStyle("SUCCESS"),
-				new Discord.MessageButton()
+					.setStyle(ButtonStyle.Success),
+				new Discord.ButtonBuilder()
 					.setCustomId("nick-d")
 					.setDisabled(state)
 					.setLabel("Decline")
-					.setStyle("DANGER")
+					.setStyle(ButtonStyle.Danger)
 			),
 		];
 

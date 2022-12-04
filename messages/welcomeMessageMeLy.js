@@ -27,8 +27,8 @@ module.exports = {
 				await member.setNickname(newName, "Tên không hợp lệ");
 				await member.send({
 					embeds: [
-						new Discord.MessageEmbed()
-							.setColor("RED")
+						new Discord.EmbedBuilder()
+							.setColor("Red")
 							.setDescription(
 								`Vì username của bạn sẽ có thể gây rối trong công tác quản trị máy chủ **Code MeLy**. Nickname mới của bạn sẽ được đặt thành \`${newName}\`. Bạn có thể chọn thay đổi nickname mới hoặc giữ nguyên như vậy.\nNếu tên hiển thị của bạn vẫn còn không hợp lệ (chứa các ký tự khó để nhìn, không thể gõ như bình thường), MeLy phải buộc lòng mời bạn ra khỏi máy chủ.`
 							),
@@ -77,8 +77,8 @@ module.exports = {
 			content += ` ${member}!`;
 		}
 
-		const Embed = new Discord.MessageEmbed()
-			.setColor("RANDOM")
+		const Embed = new Discord.EmbedBuilder()
+			.setColor("Random")
 			.setTitle(
 				`Chào mừng ${client.displayName(member)} đến với ${
 					guild.name

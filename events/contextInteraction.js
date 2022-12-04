@@ -1,27 +1,14 @@
-/**
- * @file Button Interaction Handler
- * @author Krish Garg
- * @since 3.0.0
- */
-
 const { Events } = require("discord.js");
 
 module.exports = {
 	name: Events.InteractionCreate,
-
-	/**
-	 * @description Executes when an interaction is created and handle it.
-	 * @author Naman Vrati
-	 * @param {Object} interaction The interaction which was created
-	 */
-
 	execute: async (interaction) => {
 		// Deconstructed client from interaction object.
 		const { client } = interaction;
 
 		// Checks if the interaction is a button interaction (to prevent weird bugs)
 
-		if (!interaction.isContextMenu()) return;
+		if (!interaction.isUserContextMenuCommand()) return;
 
 		/**********************************************************************/
 

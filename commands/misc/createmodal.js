@@ -28,18 +28,18 @@ module.exports = {
 				content: "question cannot greater than 45 characters",
 			});
 
-		const Embed = new Discord.MessageEmbed()
-			.setColor("RANDOM")
+		const Embed = new Discord.EmbedBuilder()
+			.setColor("Random")
 			.setDescription(question)
 			.setFooter({
 				text: "Nhấn nút ĐIỀN ở dưới để điền đơn",
 			});
 
 		const components = (state) => [
-			new Discord.MessageActionRow().addComponents(
-				new Discord.MessageButton()
+			new Discord.ActionRowBuilder().addComponents(
+				new Discord.ButtonBuilder()
 					.setCustomId("createmodal")
-					.setStyle("SECONDARY")
+					.setStyle(ButtonStyle.Secondary)
 					.setLabel("ĐIỀN")
 					.setDisabled(state)
 			),

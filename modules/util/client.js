@@ -40,12 +40,12 @@ module.exports = (client) => {
 		if (!components || !components.length || components.size <= 0) return null;
 
 		const COMPONENTS = components.map((row) =>
-			new Discord.MessageActionRow().addComponents([
+			new Discord.ActionRowBuilder().addComponents([
 				row.components.map((component) => {
 					switch (component.type) {
 						case 2:
 						case "BUTTON":
-							const button = new Discord.MessageButton()
+							const button = new Discord.ButtonBuilder()
 								.setEmoji(component.emoji)
 								.setLabel(component.label)
 								.setStyle(component.style);
@@ -62,7 +62,7 @@ module.exports = (client) => {
 						case 3:
 						case "SELECT_MENU":
 							// console.log(component)
-							return new Discord.MessageSelectMenu()
+							return new Discord.StringSelectMenuBuilder()
 								.setCustomId(String(component.customId || component.custom_id))
 								.setPlaceholder(String(component.placeholder))
 								.setMinValues(component.minValues || component.min_values)
@@ -95,8 +95,8 @@ module.exports = (client) => {
 		const actionWebhookURL = await sdb.get("actionWebhookURL");
 		const webhookClient = new Discord.WebhookClient({ url: actionWebhookURL });
 
-		const Embed = new Discord.MessageEmbed()
-			.setColor("RANDOM")
+		const Embed = new Discord.EmbedBuilder()
+			.setColor("Random")
 			.setTitle(action)
 			.setTimestamp();
 

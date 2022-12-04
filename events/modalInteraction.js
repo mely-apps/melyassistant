@@ -1,5 +1,5 @@
 /**
- * @file Modal Interaction Handler
+ * @file ModalBuilder Interaction Handler
  * @author Naman Vrati
  * @since 3.2.0
  */

@@ -9,30 +9,30 @@ module.exports = {
 	async execute(message, args) {
 		const { guild } = message;
 
-		const Embed = new Discord.MessageEmbed()
-			.setColor("BLURPLE")
+		const Embed = new Discord.EmbedBuilder()
+			.setColor("Blurple")
 			.setTitle("Kiểm soát cách nhận thông báo")
 			.setDescription(
 				"Bạn có thể lựa chọn các loại thông báo bạn muốn nhận!\nHãy nhấn vào các nút tương ứng để nhận thông báo bạn mong muốn bên dưới!"
 			);
 
 		const components = (state) => [
-			new Discord.MessageActionRow().addComponents(
-				new Discord.MessageButton()
+			new Discord.ActionRowBuilder().addComponents(
+				new Discord.ButtonBuilder()
 					.setCustomId("announcements")
 					.setDisabled(state)
 					.setLabel("Chung")
-					.setStyle("SECONDARY"),
-				new Discord.MessageButton()
+					.setStyle(ButtonStyle.Secondary),
+				new Discord.ButtonBuilder()
 					.setCustomId("events")
 					.setDisabled(state)
 					.setLabel("Sự kiện")
-					.setStyle("SECONDARY"),
-				new Discord.MessageButton()
+					.setStyle(ButtonStyle.Secondary),
+				new Discord.ButtonBuilder()
 					.setCustomId("updates")
 					.setDisabled(state)
 					.setLabel("Cập nhật")
-					.setStyle("SECONDARY")
+					.setStyle(ButtonStyle.Secondary)
 			),
 		];
 

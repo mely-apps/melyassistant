@@ -1,4 +1,6 @@
+const { ButtonStyle } = require("discord.js");
 const Discord = require("discord.js");
+const { isNormalTextChannel } = require("../../modules/util/validate");
 
 module.exports = {
 	name: "forum",
@@ -42,17 +44,17 @@ module.exports = {
 						content: "Not exist channel",
 					});
 
-				const Embed = new Discord.MessageEmbed()
-					.setColor("RANDOM")
+				const Embed = new Discord.EmbedBuilder()
+					.setColor("Random")
 					.setTitle("HỎI ĐÁP")
 					.setDescription("Bấm nút dưới và đặt câu hỏi");
 
 				const row = [
-					new Discord.MessageActionRow().addComponents(
-						new Discord.MessageButton()
+					new Discord.ActionRowBuilder().addComponents(
+						new Discord.ButtonBuilder()
 							.setCustomId("forum")
 							.setDisabled(false)
-							.setStyle("SUCCESS")
+							.setStyle(ButtonStyle.Success)
 							.setLabel("ĐẶT CÂU HỎI")
 							.setEmoji("❔")
 					),
@@ -65,7 +67,9 @@ module.exports = {
 						content: `Channel: <#${channelSet}>`,
 					});
 
-				if (!channelSet.isText() || channelSet.isThread())
+				if (
+					!isNormalTextChannel(channelSet)
+				)
 					return message.reply({
 						content: `Get a normal text channel!`,
 					});

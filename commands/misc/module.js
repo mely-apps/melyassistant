@@ -31,7 +31,7 @@ module.exports = {
 			const embedDes = moduleArray.map((m) => {
 				return `**${m.id}**: \`${m.value ? "on" : "off"}\``;
 			});
-			const Embed = new Discord.MessageEmbed()
+			const Embed = new Discord.EmbedBuilder()
 				.setTitle("Modules")
 				.setDescription(embedDes.join("\n"));
 			return message.reply({

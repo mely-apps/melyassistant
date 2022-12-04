@@ -1,4 +1,4 @@
-const { MessageActionRow, MessageButton } = require("discord.js");
+const { ActionRowBuilder, ButtonBuilder } = require("discord.js");
 
 module.exports = {
 	id: "save",
@@ -9,8 +9,8 @@ module.exports = {
 
 		try {
 			const row = [
-				new MessageActionRow().addComponents(
-					new MessageButton()
+				new ActionRowBuilder().addComponents(
+					new ButtonBuilder()
 						.setLabel("Đi tới tin nhắn")
 						.setStyle("LINK")
 						.setURL(message.url)

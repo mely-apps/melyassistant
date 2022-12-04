@@ -1,5 +1,5 @@
 const Discord = require("discord.js");
-const { MessageButtonPages } = require("discord-button-page");
+const { ButtonBuilderPages } = require("discord-button-page");
 
 module.exports = {
 	name: "thanklist",
@@ -40,9 +40,9 @@ module.exports = {
 		}
 
 		const pages = await tempArray.map((c) =>
-			new Discord.MessageEmbed()
+			new Discord.EmbedBuilder()
 				.setTitle("REPLIERS")
-				.setColor("RANDOM")
+				.setColor("Random")
 				.setDescription(`${c.join("\n")}`)
 		);
 
@@ -56,7 +56,7 @@ module.exports = {
 				embeds: pages,
 			});
 
-		const embedPages = new MessageButtonPages()
+		const embedPages = new ButtonBuilderPages()
 			.setDuration(300000)
 			.setEmbeds(pages)
 			.setReply(true);

@@ -9,7 +9,7 @@ module.exports = {
 
 		// Checks if the interaction is a select menu interaction (to prevent weird bugs)
 
-		if (!interaction.isSelectMenu()) return;
+		if (!interaction.isStringSelectMenu()) return;
 		/**
 		 * @description The Interaction command object
 		 * @type {Object}

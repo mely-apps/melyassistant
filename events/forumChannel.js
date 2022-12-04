@@ -1,5 +1,5 @@
 const { prefix, owner, test_guild_id } = require("../config.json");
-const { MessageActionRow, MessageButton, MessageEmbed, Events } = require("discord.js");
+const { ActionRowBuilder, ButtonBuilder, EmbedBuilder, Events, ButtonStyle } = require("discord.js");
 
 module.exports = {
 	name: Events.MessageCreate,
@@ -30,17 +30,17 @@ module.exports = {
 
 		// console.log(message);
 
-		const Embed = new MessageEmbed()
-			.setColor("RANDOM")
+		const Embed = new EmbedBuilder()
+			.setColor("Random")
 			.setTitle("HỎI ĐÁP")
 			.setDescription("Bấm nút dưới và đặt câu hỏi");
 
 		const row = [
-			new MessageActionRow().addComponents(
-				new MessageButton()
+			new ActionRowBuilder().addComponents(
+				new ButtonBuilder()
 					.setCustomId("forum")
 					.setDisabled(false)
-					.setStyle("SUCCESS")
+					.setStyle(ButtonStyle.Success)
 					.setLabel("ĐẶT CÂU HỎI")
 					.setEmoji("❔")
 			),

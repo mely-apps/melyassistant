@@ -68,26 +68,26 @@ module.exports = {
 
 		if (!options.length) return;
 
-		const embed = new Discord.MessageEmbed()
-			.setColor("RANDOM")
+		const embed = new Discord.EmbedBuilder()
+			.setColor("Random")
 			.setTitle(newThread.name)
 			.setDescription(
 				`Ai vừa giúp bạn giải quyết vấn đề ở ${newThread} vậy?\n\n> Hãy chọn 1 người trong menu xổ xuống ở đưới nếu người đó đã giúp bạn giải quyết chủ đề bạn hỏi, nếu không có ai giúp bạn giải quyết hoặc không có tên họ trong danh sách hãy bấm nút **\`KHÔNG\`** màu đỏ.`
 			);
 
 		const row = (state) => [
-			new Discord.MessageActionRow().addComponents(
-				new Discord.MessageSelectMenu()
+			new Discord.ActionRowBuilder().addComponents(
+				new Discord.StringSelectMenuBuilder()
 					.setCustomId("tksselect")
 					.setPlaceholder(`Chọn người đã giúp bạn...`)
 					.addOptions(options)
 					.setDisabled(state)
 			),
-			new Discord.MessageActionRow().addComponents(
-				new Discord.MessageButton()
+			new Discord.ActionRowBuilder().addComponents(
+				new Discord.ButtonBuilder()
 					.setCustomId("cancel")
 					.setDisabled(state)
-					.setStyle("DANGER")
+					.setStyle(ButtonStyle.Danger)
 					.setLabel("KHÔNG")
 			),
 		];
