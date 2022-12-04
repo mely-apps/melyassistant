@@ -28,6 +28,7 @@ const intents = [
 	GatewayIntentBits.DirectMessageReactions,
 	GatewayIntentBits.DirectMessageTyping,
 	GatewayIntentBits.GuildScheduledEvents,
+	GatewayIntentBits.MessageContent
 ];
 
 const client = new Client({

@@ -21,9 +21,14 @@ module.exports = {
 	async execute(message) {
 		const { client, guild, channel, content, author } = message;
 
+		console.log(message);
+
 		if (message.author.bot) return;
 
-		if (!guild || guild == null || channel.type === ChannelType.DM) {
+		if (
+			channel.type === ChannelType.DM ||
+			channel.type === ChannelType.GroupDM
+		) {
 			console.log(message);
 			return require("../messages/dmMessage").execute(message);
 		}
@@ -94,7 +99,7 @@ module.exports = {
 
 		// Guild Only Property, add in your command properties if true.
 
-		if (command.guildOnly && message.channel.type === "dm") {
+		if (command.guildOnly && message.channel.type === ChannelType.DM) {
 			return message.reply({
 				content: "I can't execute that command inside DMs!",
 			});
