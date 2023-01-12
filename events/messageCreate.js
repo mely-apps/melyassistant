@@ -21,7 +21,7 @@ module.exports = {
 	async execute(message) {
 		const { client, guild, channel, content, author } = message;
 
-		console.log(message);
+		// console.log(message);
 
 		if (message.author.bot) return;
 

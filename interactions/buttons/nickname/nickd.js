@@ -20,7 +20,7 @@ module.exports = {
 				ephemeral: true,
 			});
 
-		if (!member.permissions.has(Discord.Permissions.FLAGS.MANAGE_NICKNAMES))
+		if (!member.permissions.has(Discord.PermissionFlagsBits.ManageNicknames))
 			return interaction.reply({
 				content: `You dont have the required right to do that.`,
 				ephemeral: true,

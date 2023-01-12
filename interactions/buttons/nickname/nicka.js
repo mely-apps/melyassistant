@@ -19,7 +19,7 @@ module.exports = {
 				ephemeral: true,
 			});
 
-		if (!member.permissions.has(Discord.Permissions.FLAGS.MANAGE_NICKNAMES))
+		if (!member.permissions.has(Discord.PermissionFlagsBits.ManageNicknames))
 			return interaction.reply({
 				content: `You dont have the required right to do that.`,
 				ephemeral: true,
@@ -30,47 +30,48 @@ module.exports = {
 		const reqNewNick = reqEmbed.fields.find((f) => f.name === "New")["value"];
 		const reqOldNick = reqEmbed.fields.find((f) => f.name === "Old")["value"];
 
-		try {
-			const reqMember = await guild.members.fetch(reqId);
+		const reqMember = await guild.members.fetch(reqId);
 
-			reqMember.setNickname(reqNewNick).catch(console.error);
-
-			reqMember.send({
-				content: `✅ ${client.displayName(
-					member
-				)} đã chấp nhận yêu cầu đổi tên của bạn.`,
-			});
-
-			const accecpt_embed = new Discord.EmbedBuilder()
-				.setTitle(`Nickname Request Approved (${reqId})`)
-				.setColor("Green")
-				.addFields([
-					{
-						name: `Changed for`,
-						value: reqMember.user.tag,
-					},
-					{
-						name: `From`,
-						value: reqOldNick,
-					},
-					{
-						name: `To`,
-						value: reqNewNick,
-					},
-				])
-				.setFooter({
-					text: `Approved by ${interaction.user.tag}`,
+		reqMember
+			.setNickname(reqNewNick)
+			.then((member) => {
+				member.send({
+					content: `✅ ${client.displayName(
+						member
+					)} đã chấp nhận yêu cầu đổi tên của bạn.`,
 				});
 
-			interaction.update({
-				embeds: [accecpt_embed],
-				components: [],
+				const accecpt_embed = new Discord.EmbedBuilder()
+					.setTitle(`Nickname Request Approved (${reqId})`)
+					.setColor("Green")
+					.addFields([
+						{
+							name: `Changed for`,
+							value: reqMember.user.tag,
+						},
+						{
+							name: `From`,
+							value: reqOldNick,
+						},
+						{
+							name: `To`,
+							value: reqNewNick,
+						},
+					])
+					.setFooter({
+						text: `Approved by ${interaction.user.tag}`,
+					});
+
+				interaction.update({
+					embeds: [accecpt_embed],
+					components: [],
+				});
+			})
+			.catch((error) => {
+				interaction.reply({
+					content: `\`\`\`${error}\`\`\``,
+					ephemeral: true,
+				});
 			});
-		} catch (error) {
-			interaction.reply({
-				content: `${error.message}`,
-				ephemeral: true,
-			});
-		}
 	},
 };
