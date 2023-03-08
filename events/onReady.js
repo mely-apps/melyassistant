@@ -26,6 +26,7 @@ module.exports = {
                 ],
             });
         }
+        setPresence();
 		setInterval(async () => {
 			setPresence();
 		}, AnHour);
