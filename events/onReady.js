@@ -9,7 +9,6 @@ module.exports = {
 
 		console.log(`Ready! Logged in as ${client.user.tag}`);
 
-
         const setPresence = async () => {
             const melyGuild = await client.guilds.fetch("853907347528220712")
 

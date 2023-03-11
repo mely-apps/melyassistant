@@ -34,8 +34,8 @@ module.exports = {
 
 		reqMember
 			.setNickname(reqNewNick)
-			.then((member) => {
-				member.send({
+			.then((m) => {
+				m.send({
 					content: `✅ ${client.displayName(
 						member
 					)} đã chấp nhận yêu cầu đổi tên của bạn.`,
