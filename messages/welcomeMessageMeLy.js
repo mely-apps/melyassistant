@@ -1,6 +1,7 @@
 const Discord = require("discord.js");
 const translate = require("translate-google");
 const { owner } = require("../config.json");
+const { getRandomWelcomeImage } = require("../modules/util");
 
 module.exports = {
 	async execute(member) {
@@ -58,7 +59,7 @@ module.exports = {
 
 		const rulesChannel = await guild.channels.fetch(guild.rulesChannelId);
 
-		const bannerURL = await fetchedGuild.bannerURL({ size: 1024 });
+		const banner = await getRandomWelcomeImage(guild);
 
 		const langs = Object.keys(require("../constants/locale"));
 		langs.shift();
@@ -95,7 +96,7 @@ module.exports = {
 				}!`
 			)
 			.setThumbnail(member.displayAvatarURL({ dynamic: true }))
-			.setImage(bannerURL);
+			.setImage(banner.url);
 
 		return welcomeChannel.send({
 			content: content,
