@@ -58,6 +58,8 @@ module.exports = {
 
 		const rulesChannel = await guild.channels.fetch(guild.rulesChannelId);
 
+		const bannerURL = await fetchedGuild.bannerURL();
+
 		const langs = Object.keys(require("../constants/locale"));
 		langs.shift();
 
@@ -93,7 +95,7 @@ module.exports = {
 				}!`
 			)
 			.setThumbnail(member.displayAvatarURL({ dynamic: true }))
-			.setImage(`${await fetchedGuild.bannerURL()}}`);
+			.setImage(bannerURL);
 
 		return welcomeChannel.send({
 			content: content,
