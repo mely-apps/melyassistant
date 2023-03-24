@@ -1,9 +1,12 @@
 const Discord = require("discord.js");
 const translate = require("translate-google");
+const { owner } = require("../config.json");
 
 module.exports = {
 	async execute(member) {
 		const { client, guild } = member;
+
+		const fetchedGuild = await guild.fetch();
 
 		if (member.user.bot) {
 			const botRole =
@@ -30,12 +33,12 @@ module.exports = {
 						new Discord.EmbedBuilder()
 							.setColor("Red")
 							.setDescription(
-								`Vì username của bạn sẽ có thể gây rối trong công tác quản trị máy chủ **Code MeLy**. Nickname mới của bạn sẽ được đặt thành \`${newName}\`. Bạn có thể chọn thay đổi nickname mới hoặc giữ nguyên như vậy.\nNếu tên hiển thị của bạn vẫn còn không hợp lệ (chứa các ký tự khó để nhìn, không thể gõ như bình thường), MeLy phải buộc lòng mời bạn ra khỏi máy chủ.`
+								`Vì username của cậu sẽ có thể gây rối trong công tác quản trị máy chủ **Code MeLy**. Nickname mới của cậu sẽ được đặt thành \`${newName}\`. Cậu có thể chọn thay đổi nickname mới hoặc giữ nguyên như vậy.\nNếu tên hiển thị của bạn vẫn còn không hợp lệ (chứa các ký tự khó để nhìn, không thể gõ như bình thường), MeLy phải buộc lòng mời cậu ra khỏi máy chủ.`
 							),
 					],
 				});
 			} catch (error) {
-				let fiezt = await client.users.fetch(445102575314927617);
+				let fiezt = await client.users.fetch(owner);
 				await fiezt.send({
 					content: `${member.id}\nĐổi nickname: ${newName}\n\`\`\`${error.message}\`\`\``,
 				});
@@ -47,16 +50,8 @@ module.exports = {
 			c.name.toLowerCase().includes("say-hi")
 		);
 
-		const getRoleChannel = await guild.channels.cache.find((c) =>
-			c.name.toLowerCase().includes("nhận-role")
-		);
-
 		const generalChat = await guild.channels.cache.find((c) =>
 			c.name.toLowerCase().includes("general-chat")
-		);
-
-		const melyChat = await guild.channels.cache.find((c) =>
-			c.name.toLowerCase().includes("mely-chat")
 		);
 
 		const rulesChannel = await guild.rulesChannel;
@@ -77,25 +72,32 @@ module.exports = {
 			content += ` ${member}!`;
 		}
 
+		const row = new Discord.ActionRowBuilder().addComponents(
+            new Discord.ButtonBuilder()
+				.setStyle(Discord.ButtonStyle.Link)
+				.setURL(`${rulesChannel.url}`)
+				.setLabel("Đọc luật đã nào!"),
+			new Discord.ButtonBuilder()
+				.setStyle(Discord.ButtonStyle.Link)
+				.setURL(`${generalChat.url}`)
+				.setLabel("Cùng tám thôi!")
+		);
+
 		const Embed = new Discord.EmbedBuilder()
 			.setColor("Random")
+			.setAuthor()
 			.setTitle(
-				`Chào mừng ${client.displayName(member)} đến với ${
+				`Chào mừng ${client.displayName(member)} đã đến với vũ trụ ${
 					guild.name
-				}! Hãy bắt đầu làm người một nhà với MeLy với cẩm nang 4 bước nhé!`
+				}!`
 			)
-			// .setURL(`https://www.facebook.com/code.mely/`)
 			.setThumbnail(member.displayAvatarURL({ dynamic: true }))
-			.setImage(
-				`https://cdn.discordapp.com/attachments/975455262896951317/980289916225323008/Thiet_ke_chua_co_ten_1.jpg`
-			)
-			.setDescription(
-				`1️⃣ Hãy đọc ${rulesChannel} để nắm rõ luật server và nhận vai trò của mình trong ${getRoleChannel} để chọn những tính năng thú vị trong server.\n2️⃣ Chat "say hi" với MeLy trong ${melyChat} để MeLy được làm quen nè!\n3️⃣ Mọi sự kiện quan trọng sẽ được MeLy cập nhật trên fanpage **[Code MeLy](https://www.facebook.com/code.mely)**. Nhớ Like, follow để theo dõi những điều mới mẻ từ server nha!\n4️⃣ Nếu có điều gì thắc mắc, hãy hỏi mọi người tại ${generalChat}. Ở đây không có gì ngoài thân thiện 😁\n\nNote: Bạn có thể gõ ***,mely*** tại mọi nơi để biết thêm về máy chủ!`
-			);
+			.setImage(`${guild.bannerURL({ dynamic: true })}}`);
 
 		return welcomeChannel.send({
 			content: content,
 			embeds: [Embed],
+            components: [row]
 		});
 	},
 };
