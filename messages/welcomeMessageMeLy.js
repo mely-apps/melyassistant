@@ -93,7 +93,7 @@ module.exports = {
 				}!`
 			)
 			.setThumbnail(member.displayAvatarURL({ dynamic: true }))
-			.setImage(`${guild.bannerURL({ dynamic: true })}}`);
+			.setImage(`${await fetchedGuild.bannerURL()}}`);
 
 		return welcomeChannel.send({
 			content: content,
