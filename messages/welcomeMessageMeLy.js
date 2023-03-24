@@ -50,11 +50,13 @@ module.exports = {
 			c.name.toLowerCase().includes("say-hi")
 		);
 
-		const generalChat = await guild.channels.cache.find((c) =>
+		const generalChatCache = await guild.channels.cache.find((c) =>
 			c.name.toLowerCase().includes("general-chat")
 		);
 
-		const rulesChannel = await guild.rulesChannel;
+		const generalChat = await guild.channels.fetch(generalChatCache.id);
+
+		const rulesChannel = await guild.channels.fetch(guild.rulesChannelId);
 
 		const langs = Object.keys(require("../constants/locale"));
 		langs.shift();
@@ -87,7 +89,6 @@ module.exports = {
 
 		const Embed = new Discord.EmbedBuilder()
 			.setColor("Random")
-			.setAuthor()
 			.setTitle(
 				`Chào mừng ${client.displayName(member)} đã đến với vũ trụ ${
 					guild.name

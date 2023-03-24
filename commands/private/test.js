@@ -10,6 +10,5 @@ module.exports = {
 		const { client, guild, member } = message;
 
 		client.emit("guildMemberAdd", member);
-		console.log(message)
 	},
 };
