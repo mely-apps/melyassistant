@@ -76,12 +76,10 @@ module.exports = {
 
 		const row = new Discord.ActionRowBuilder().addComponents(
 			new Discord.ButtonBuilder()
-				.setCustomId("link-rule")
 				.setStyle(Discord.ButtonStyle.Link)
 				.setURL(`${rulesChannel.url}`)
 				.setLabel("Đọc luật đã nào!"),
 			new Discord.ButtonBuilder()
-				.setCustomId("link-chat")
 				.setStyle(Discord.ButtonStyle.Link)
 				.setURL(`${generalChat.url}`)
 				.setLabel("Cùng tám thôi!")
