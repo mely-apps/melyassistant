@@ -9,7 +9,7 @@ module.exports = {
 	async execute(message, args) {
 		const { client, guild, member } = message;
 		const fetchedGuild = await guild.fetch();
-		const bannerURL = await fetchedGuild.bannerURL();
+		const bannerURL = await fetchedGuild.bannerURL({size: 1024});
 
 		message.reply({
 			content: `${bannerURL}`,

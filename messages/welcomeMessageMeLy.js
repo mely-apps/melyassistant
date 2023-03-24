@@ -58,7 +58,7 @@ module.exports = {
 
 		const rulesChannel = await guild.channels.fetch(guild.rulesChannelId);
 
-		const bannerURL = await fetchedGuild.bannerURL();
+		const bannerURL = await fetchedGuild.bannerURL({ size: 1024 });
 
 		const langs = Object.keys(require("../constants/locale"));
 		langs.shift();
