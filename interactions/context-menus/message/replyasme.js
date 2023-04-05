@@ -19,6 +19,7 @@ module.exports = {
 	 * @returns
 	 */
 	async execute(interaction) {
+        await interaction.targetMessage.channel.sendTyping();
 		const contentInput = new ActionRowBuilder().addComponents(
 			new TextInputBuilder()
 				.setCustomId("content")
@@ -51,7 +52,7 @@ module.exports = {
 					content: "Replied!",
                     ephemeral: true
 				});
-                
+
                 console.log(`${interaction.user.id} replied to ${interaction.targetMessage.guildId}/${interaction.targetMessage.channelId}/${interaction.targetId}: ${content}`)
 			})
 			.catch(console.error);

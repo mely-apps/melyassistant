@@ -35,16 +35,24 @@ module.exports = {
 		const content = interaction.options.getString("content");
 		const channel =
 			interaction.options.getChannel("channel") || interaction.channel;
+            
+		await channel.sendTyping();
 
-		await channel.send({
-			content: `${content}`,
-		});
+		setTimeout(() => {
+			(async () => {
+				await channel.send({
+					content: `${content}`,
+				});
+			})();
+		}, content.length * 10);
 
 		await interaction.reply({
 			content: `Sent!\n${Discord.codeBlock(content)}`,
-            ephemeral: true
+			ephemeral: true,
 		});
 
-        console.log(`${interaction.user.id} sent to ${guild.id}/${channel.id}: ${content}`)
+		console.log(
+			`${interaction.user.id} sent to ${guild.id}/${channel.id}: ${content}`
+		);
 	},
 };
