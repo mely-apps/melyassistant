@@ -36,7 +36,7 @@ module.exports = {
 			// The label is the prompt the user sees for this input
 			.setLabel("Lý do từ chối")
 			// Short means only a single line of text
-			.setStyle("PARAGRAPH");
+			.setStyle(Discord.TextInputStyle.Paragraph);
 
 		const reqDecReasonRow = new Discord.ActionRowBuilder().addComponents(
 			reqDecReasonInput
