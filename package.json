@@ -38,14 +38,13 @@
 	"homepage": "https://github.com/NamVr/DiscordBot-Template#readme",
 	"dependencies": {
 		"better-sqlite3": "^7.5.3",
-		"discord-api-types": "^0.33.0",
+		"discord-api-types": "^0.37.37",
 		"discord-button-page": "^6.2.0",
-		"discord.js": "^14.7.0",
+		"discord.js": "^14.9.0",
 		"duration": "^0.2.2",
 		"lang-detector": "^1.0.6",
 		"numeral": "^2.0.6",
-		"quick.db": "^9.0.3",
-		"translate-google": "^1.5.0"
+		"quick.db": "^9.0.3"
 	},
 	"devDependencies": {
 		"nodemon": "^2.0.16"
