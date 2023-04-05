@@ -4,6 +4,8 @@ database/*.json
 database/*.sqlite
 .vscode/
 *.sqlite
+package-lock.json
+yarn.lock
 
 # Logs
 logs
