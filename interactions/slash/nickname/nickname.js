@@ -80,7 +80,7 @@ module.exports = {
 			});
 		} catch (error) {
 			interaction.reply({
-				content: `Đã có lỗi xảy ra! Hãy báo cho QTV!\n\`${error.message}\``,
+				content: `Đã có lỗi xảy ra! Hãy báo cho QTV!\n\`${error?.message || error}\``,
 				ephemeral: true,
 			});
 		}
