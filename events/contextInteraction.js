@@ -2,19 +2,24 @@ const { Events } = require("discord.js");
 
 module.exports = {
 	name: Events.InteractionCreate,
+    /**
+     *
+     * @param {import('discord.js').UserContextMenuCommandInteraction | import('discord.js').MessageContextMenuCommandInteraction} interaction
+     * @returns
+     */
 	execute: async (interaction) => {
 		// Deconstructed client from interaction object.
 		const { client } = interaction;
 
 		// Checks if the interaction is a button interaction (to prevent weird bugs)
 
-		if (!interaction.isUserContextMenuCommand()) return;
+		if (!interaction.isContextMenuCommand()) return;
 
 		/**********************************************************************/
 
 		// Checks if the interaction target was a user
 
-		if (interaction.targetType === "USER") {
+		if (interaction.isUserContextMenuCommand()) {
 			/**
 			 * @description The Interaction command object
 			 * @type {Object}
@@ -39,7 +44,7 @@ module.exports = {
 			}
 		}
 		// Checks if the interaction target was a user
-		else if (interaction.targetType === "MESSAGE") {
+		else if (interaction.isMessageContextMenuCommand()) {
 			/**
 			 * @description The Interaction command object
 			 * @type {Object}

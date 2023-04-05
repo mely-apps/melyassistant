@@ -33,7 +33,6 @@ const { Events } = require("discord.js");
 		// You can modify the error message at ./messages/defaultModalError.js file!
 
 		if (!command) {
-			await require("../messages/defaultModalError").execute(interaction);
 			return;
 		}
 
