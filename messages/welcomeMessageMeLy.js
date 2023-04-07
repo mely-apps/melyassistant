@@ -1,5 +1,4 @@
 const Discord = require("discord.js");
-const translate = require("translate-google");
 const { owner } = require("../config.json");
 const { getRandomWelcomeImage } = require("../modules/util");
 
