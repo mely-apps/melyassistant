@@ -42,7 +42,7 @@ const { Events } = require("discord.js");
 			await command.execute(interaction);
 			return;
 		} catch (err) {
-			console.error(err);
+			console.error(`[Modal Interaction] ${err}`);
 			await interaction.reply({
 				content: "There was an issue while understanding this modal!",
 				ephemeral: true,

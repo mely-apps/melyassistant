@@ -54,10 +54,41 @@ module.exports = {
 
 		interaction
 			.awaitModalSubmit({ filter, time: 300_000 })
-			.then(async (interaction) => {
-				const reqUser = await client.users.fetch(reqId);
-				const reason = interaction.fields.getTextInputValue("reason");
-				reqUser
+			.then(async (replyInteraction) => {
+				const reqMem = await interaction.guild.members.fetch(reqId);
+				const reason = replyInteraction.fields.getTextInputValue("reason");
+
+				const decline_embed = new Discord.EmbedBuilder()
+					.setTitle(`Nickname Request Declined (${reqId})`)
+					.setColor("Red")
+					.addFields([
+						{
+							name: `Changed for`,
+							value: reqMem.user.tag,
+						},
+						{
+							name: `From`,
+							value: reqOldNick,
+						},
+						{
+							name: `To`,
+							value: reqNewNick,
+						},
+						{
+							name: "Reason",
+							value: reason.length == 0 ? "None" : reason,
+						},
+					])
+					.setFooter({
+						text: `Declined by ${replyInteraction.user.tag}`,
+					});
+
+				replyInteraction.update({
+					embeds: [decline_embed],
+					components: [],
+				});
+
+				reqMem
 					.send({
 						content: `❌ ${client.displayName(
 							member
@@ -65,45 +96,24 @@ module.exports = {
 							reason.length == 0 ? "" : `\n**Lý do**: \`\`\`${reason}\`\`\``
 						}`,
 					})
-					.then(() => {
-						const decline_embed = new Discord.EmbedBuilder()
-							.setTitle(`Nickname Request Declined (${reqId})`)
-							.setColor("Red")
-							.addFields([
-								{
-									name: `Changed for`,
-									value: reqUser.tag,
-								},
-								{
-									name: `From`,
-									value: reqOldNick,
-								},
-								{
-									name: `To`,
-									value: reqNewNick,
-								},
-								{
-									name: "Reason",
-									value: reason.length == 0 ? "None" : reason,
-								},
-							])
-							.setFooter({
-								text: `Declined by ${interaction.user.tag}`,
+					.catch((e) => {
+						if (e.message)
+							replyInteraction.followUp({
+								content: `${e.message}`,
+								ephemeral: true,
 							});
 
-						interaction.update({
-							embeds: [decline_embed],
-							components: [],
-						});
-					})
-					.catch((e) => {
-						interaction.reply({
-							content: `${e.message}`,
-							ephemeral: true,
-						});
+						console.error("[Nick Decline User DM]", e);
 					});
 			})
-			.catch(console.error);
+			.catch((error) => {
+				if (error.message)
+					interaction.followUp({
+						content: `${error.message}`,
+						ephemeral: true,
+					});
+				console.error("[Nick Decline]", error);
+			});
 		// console.log(reqId, reqOldNick, reqNewNick);
 	},
 };
