@@ -4,103 +4,106 @@
  * @since 3.0.0
  */
 
-const { Events } = require("discord.js");
+const { Events } = require('discord.js')
 
 module.exports = {
-	name: Events.InteractionCreate,
+    name: Events.InteractionCreate,
 
-	/**
-	 * @description Executes when an interaction is created and handle it.
-	 * @author Naman Vrati
-	 * @param {Object} interaction The interaction which was created
-	 */
+    /**
+     * @description Executes when an interaction is created and handle it.
+     * @author Naman Vrati
+     * @param {Object} interaction The interaction which was created
+     */
 
-	async execute(interaction) {
-		// Deconstructed client from interaction object.
-		const { client } = interaction;
+    async execute(interaction) {
+        // Deconstructed client from interaction object.
+        const { client } = interaction
 
-		// Checks if the interaction is a button interaction (to prevent weird bugs)
+        // Checks if the interaction is a button interaction (to prevent weird bugs)
 
-		if (!interaction.isButton()) return;
-		/**
-		 * @description The Interaction command object
-		 * @type {Object}
-		 */
+        if (!interaction.isButton()) return
+        /**
+         * @description The Interaction command object
+         * @type {Object}
+         */
 
-		const command = client.buttonCommands.get(interaction.customId);
+        const command = client.buttonCommands.get(interaction.customId)
 
-		// If the interaction is not a command in cache, return error message.
-		// You can modify the error message at ./messages/defaultButtonError.js file!
+        // If the interaction is not a command in cache, return error message.
+        // You can modify the error message at ./messages/defaultButtonError.js file!
 
-		if (!command) {
-			await require("../messages/defaultButtonError").execute(interaction);
-			return;
-		}
+        if (!command) {
+            // await require('../messages/defaultButtonError').execute(interaction)
+            return
+        }
 
-		// A try to execute the interaction.
+        // A try to execute the interaction.
 
-		try {
-			if (command.filter && command.filter.toLowerCase() === "author") {
-				if (interaction.message) {
-					if (interaction.message.interaction) {
-						if (interaction.message.interaction.user.id !== interaction.user.id)
-							return await interaction.reply({
-								content: "This message is not for you!",
-								ephemeral: true,
-							});
-					}
+        try {
+            if (command.filter && command.filter.toLowerCase() === 'author') {
+                if (interaction.message) {
+                    if (interaction.message.interaction) {
+                        if (
+                            interaction.message.interaction.user.id !==
+                            interaction.user.id
+                        )
+                            return await interaction.reply({
+                                content: 'This message is not for you!',
+                                ephemeral: true,
+                            })
+                    }
 
-					if (interaction.message.reference) {
-						const guild = await client.guilds.fetch(
-							interaction.message.reference.guildId
-						);
-						const channel = await guild.channels.fetch(
-							interaction.message.reference.channelId
-						);
-						const message = await channel.messages.fetch(
-							interaction.message.reference.messageId
-						);
+                    if (interaction.message.reference) {
+                        const guild = await client.guilds.fetch(
+                            interaction.message.reference.guildId
+                        )
+                        const channel = await guild.channels.fetch(
+                            interaction.message.reference.channelId
+                        )
+                        const message = await channel.messages.fetch(
+                            interaction.message.reference.messageId
+                        )
 
-						if (message.author.id !== interaction.user.id)
-							return await interaction.reply({
-								content: "This message is not for you!",
-								ephemeral: true,
-							});
-					}
+                        if (message.author.id !== interaction.user.id)
+                            return await interaction.reply({
+                                content: 'This message is not for you!',
+                                ephemeral: true,
+                            })
+                    }
 
-					// if (interaction.message.mentions) {
-					// 	if (
-					// 		interaction.message.mentions.repliedUser &&
-					// 		interaction.message.mentions.repliedUser.id !==
-					// 			interaction.user.id
-					// 	) {
-					// 		return await interaction.reply({
-					// 			content: "This message is not for you!",
-					// 			ephemeral: true,
-					// 		});
-					// 	}
+                    // if (interaction.message.mentions) {
+                    // 	if (
+                    // 		interaction.message.mentions.repliedUser &&
+                    // 		interaction.message.mentions.repliedUser.id !==
+                    // 			interaction.user.id
+                    // 	) {
+                    // 		return await interaction.reply({
+                    // 			content: "This message is not for you!",
+                    // 			ephemeral: true,
+                    // 		});
+                    // 	}
 
-					// 	if (
-					// 		interaction.message.mentions.users.length > 0 &&
-					// 		interaction.message.mentions.users.first().id !==
-					// 			interaction.user.id
-					// 	)
-					// 		return await interaction.reply({
-					// 			content: "This message is not for you!",
-					// 			ephemeral: true,
-					// 		});
-					// }
-				}
-			}
-			await command.execute(interaction);
-			return;
-		} catch (err) {
-			console.error(err);
-			await interaction.reply({
-				content: "There was an issue while executing that button!",
-				ephemeral: true,
-			});
-			return;
-		}
-	},
-};
+                    // 	if (
+                    // 		interaction.message.mentions.users.length > 0 &&
+                    // 		interaction.message.mentions.users.first().id !==
+                    // 			interaction.user.id
+                    // 	)
+                    // 		return await interaction.reply({
+                    // 			content: "This message is not for you!",
+                    // 			ephemeral: true,
+                    // 		});
+                    // }
+                }
+            }
+            await command.execute(interaction)
+        } catch (err) {
+            console.error(err)
+            try {
+                await interaction.reply({
+                    content: 'There was an issue while executing that button!',
+                    ephemeral: true,
+                })
+            } catch (error) {}
+        }
+    },
+}
