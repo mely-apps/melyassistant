@@ -1,11 +1,16 @@
 const { SlashCommandBuilder } = require(`discord.js`)
 const { FastType } = require('discord-gamecord')
+const { fastTypeSentences } = require('../../../constants/const.json')
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName(`fast-type`)
         .setDescription(`Play a game of Fast Type!`),
     async execute(interaction) {
+        const sentence =
+            fastTypeSentences[
+                Math.floor(Math.random() * fastTypeSentences.length)
+            ]
         const game = new FastType({
             message: interaction,
             isSlashGame: true,
@@ -16,7 +21,7 @@ module.exports = {
                     'You have {time} seconds to type the sentence below.',
             },
             timeoutTime: 60000,
-            sentence: 'A really cool sentence to fast type.',
+            sentence: sentence,
             winMessage:
                 '🎉 | You won! You finished the type race in {time} seconds with {wpm} wpm.',
             loseMessage: `> You lost, you couldn't type the correct sentence in time.`,
