@@ -2,7 +2,7 @@ module.exports = {
 	apps: [
 		{
 			name: "MeLy",
-			script: "./bot.js",
+			script: "./build/main.js",
 			env_production: {
 				NODE_ENV: "production",
 			},
